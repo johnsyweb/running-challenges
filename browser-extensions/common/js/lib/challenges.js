@@ -885,21 +885,12 @@ function generate_stat_longest_tourism_streak(parkrun_results) {
   const help = "The highest number of consecutive different events attended."
   var longest_start = 0, longest_finish = 0, start_index = 0, finish_index = 0;
 
-  function has_run_event_in_streak(start, finish, event_name) {
-    for (var i = start; i < finish; ++i) {
-      if (parkrun_results[i].name === event_name) {
-        return i
-      }
-    }
-    return null
-  }
-
   function longest_streak() {
     return longest_finish - longest_start + 1
   }
 
   for (; finish_index < parkrun_results.length; finish_index++) {
-    previous_visit = has_run_event_in_streak(start_index, finish_index, parkrun_results[finish_index].name)
+    previous_visit = visit_to_event_in_streak(start_index, finish_index - 1, parkrun_results[finish_index].name, parkrun_results)
 
     if (previous_visit !== null) {
       // If a participant has visited an event multiple times,
@@ -921,6 +912,39 @@ function generate_stat_longest_tourism_streak(parkrun_results) {
     value = `${longest_streak()} parkruns: ${parkrun_results[longest_start].eventlink} (${parkrun_results[longest_start].datelink}) - ${parkrun_results[longest_finish].eventlink} (${parkrun_results[longest_finish].datelink})`
   }
   return { display_name, help, value }
+}
+
+function generate_stat_current_tourism_streak(parkrun_results) {
+  const display_name = "Current tourism streak"
+  const help = "The number of consecutive different events attended up until the most recent event."
+
+  var finish_index = parkrun_results.length - 1
+  var start_index = finish_index
+
+  for (;start_index > 0; start_index--) {
+    if (visit_to_event_in_streak(start_index, finish_index, parkrun_results[start_index - 1].name, parkrun_results) !== null) {
+      break
+    }
+  }
+
+  const streak = finish_index - start_index + 1
+  var value = "No parkruns: Yet to start (let's go!)"
+  if (parkrun_results.length > 0 && streak == 1) {
+    value = `1 parkrun: ${parkrun_results[start_index].eventlink} (${parkrun_results[start_index].datelink})`
+  } else if (streak > 1) {
+    value = `${streak} parkruns: ${parkrun_results[start_index].eventlink} (${parkrun_results[start_index].datelink}) - ${parkrun_results[finish_index].eventlink} (${parkrun_results[finish_index].datelink})`
+  }
+
+  return { display_name, help, value }
+}
+
+function visit_to_event_in_streak(start, finish, event_name, parkrun_results) {
+  for (var i = start; i <= finish; ++i) {
+    if (parkrun_results[i].name === event_name) {
+      return i
+    }
+  }
+  return null
 }
 
 function generate_stat_runs_this_year(parkrun_results) {
@@ -1264,7 +1288,8 @@ function generate_stats(data) {
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)
     stats['events_run'] = generate_stat_events_run(data.parkrun_results)
     stats['tourist_quotient'] = generate_stat_tourist_quotient(data.parkrun_results)
-    stats['tourism_streak'] = generate_stat_longest_tourism_streak(data.parkrun_results)
+    stats['longest_tourism_streak'] = generate_stat_longest_tourism_streak(data.parkrun_results)
+    stats['current_tourism_streak'] = generate_stat_current_tourism_streak(data.parkrun_results)
   }
 
   // Stats that need a list of parkruns, and additional geo data to determine where they are
