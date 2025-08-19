@@ -308,18 +308,6 @@ describe("challenges.js", function() {
 
             it("should return 'Bushy Park' if run there most often", function () {
                 var parkrunResults = [
-<<<<<<< HEAD
-                    createParkrunResult({name: "Winchester"}),
-                    createParkrunResult({name: "Winchester"}),
-                    createParkrunResult({name: "Winchester"})
-                ]
-                var r = generate_stat_average_parkrun_event(parkrunResults, geoData)
-                assert.equal(r.value, "Winchester")
-                assert.equal(r.url, "https://www.parkrun.org.uk/winchester")
-            })
-
-            it("should return \"Bushy Park\" if you have run there most often", function() {
-                var parkrunResults = [
                     createParkrunResult({name: "Bushy Park"}),
                     createParkrunResult({name: "Bushy Park"}),
                     createParkrunResult({name: "Winchester"})
@@ -501,19 +489,6 @@ describe("challenges.js", function() {
             })
         })
     })
-=======
-                    createParkrunResult({ name: "Bushy Park" }),
-                    createParkrunResult({ name: "Bushy Park" }),
-                    createParkrunResult({ name: "Winchester" })
-                ];
-                var filteredGeoData = filterGeoData(geoData, { "events": ["Bushy Park", "Winchester"] });
-                var r = generate_stat_average_parkrun_event(parkrunResults, filteredGeoData, homeParkrun);
-                assert.equal(r.value, "Bushy Park - 78km away");
-                assert.equal(r.url, "https://www.parkrun.org.uk/bushy");
-                assert.equal(r.help, "The nearest parkrun event to your home parkrun location")});
-        });
-    });
->>>>>>> paj/record-fixer
 
     describe("challenges", function() {
 
