@@ -97,7 +97,16 @@ function buildBrowser(browser) {
     `mkdir -p "${buildDir}/css/third-party/leaflet" "${buildDir}/css/third-party/leaflet-fullscreen" "${buildDir}/css/third-party/leaflet-markercluster" "${buildDir}/css/third-party/leaflet-extramarkers"`,
   );
   run(
-    `cp -r css/third-party/leaflet css/third-party/leaflet-fullscreen css/third-party/leaflet-extramarkers "${buildDir}/css/third-party/"`,
+    `cp -r css/third-party/leaflet css/third-party/leaflet-extramarkers "${buildDir}/css/third-party/"`,
+  );
+  run(
+    `cp "${nm}/leaflet.fullscreen/Control.FullScreen.css" "${buildDir}/css/third-party/leaflet-fullscreen/Control.FullScreen.css"`,
+  );
+  run(
+    `cp "${nm}/leaflet.fullscreen/icon-fullscreen.png" "${buildDir}/css/third-party/leaflet-fullscreen/icon-fullscreen.png"`,
+  );
+  run(
+    `cp "${nm}/leaflet.fullscreen/icon-fullscreen-2x.png" "${buildDir}/css/third-party/leaflet-fullscreen/icon-fullscreen-2x.png"`,
   );
   run(
     `cp "${nm}/leaflet.markercluster/dist/MarkerCluster.css" "${buildDir}/css/third-party/leaflet-markercluster/"`,

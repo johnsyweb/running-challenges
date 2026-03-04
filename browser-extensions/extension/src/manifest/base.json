@@ -58,7 +58,7 @@
       ],
       "css": [
         "css/third-party/leaflet/leaflet.css",
-        "css/third-party/leaflet-fullscreen/leaflet-fullscreen.css",
+        "css/third-party/leaflet-fullscreen/Control.FullScreen.css",
         "css/third-party/leaflet-markercluster/MarkerCluster.css",
         "css/third-party/leaflet-markercluster/MarkerCluster.Default.css",
         "css/third-party/leaflet-extramarkers/leaflet.extra-markers.css"
