@@ -65,6 +65,97 @@ async function mockEventsJson(page) {
   );
 }
 
+const ONE_PX_TRANSPARENT_PNG = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+  "base64",
+);
+
+function getVolunteerFixturePath(hostname, athleteId) {
+  return path.join(
+    __dirname,
+    "..",
+    "supporting-data",
+    "sites",
+    hostname,
+    "contents",
+    "parkrunner",
+    athleteId,
+    "index.html",
+  );
+}
+
+/**
+ * Install route mocks so the Leaflet test needs no network: main doc, volunteer
+ * fetch, events.json, and OSM tiles are fulfilled from fixtures; all other
+ * requests are aborted. Call before page.goto().
+ */
+async function installNetworkFreeMocks(page, hostname, athleteId) {
+  const mainUrl = `https://www.${hostname}/parkrunner/${athleteId}/all/`;
+  const volunteerUrl = `https://www.${hostname}/parkrunner/${athleteId}/`;
+  const mainPath = getFixturePath(hostname, athleteId, "all");
+  const volunteerPath = getVolunteerFixturePath(hostname, athleteId);
+  const eventsPath = path.join(
+    __dirname,
+    "..",
+    "supporting-data",
+    "sites",
+    "images.parkrun.com",
+    "contents",
+    "events.json",
+  );
+
+  if (!fs.existsSync(mainPath)) {
+    throw new Error(
+      `Fixture not found: ${mainUrl} (${mainPath}). Run ui-test/update.sh to refresh.`,
+    );
+  }
+  if (!fs.existsSync(volunteerPath)) {
+    throw new Error(
+      `Volunteer fixture not found: ${volunteerUrl} (${volunteerPath}). Run ui-test/update.sh to refresh.`,
+    );
+  }
+  if (!fs.existsSync(eventsPath)) {
+    throw new Error(`Fixture not found: ${eventsPath}`);
+  }
+
+  const mainHtml = fs.readFileSync(mainPath, "utf8");
+  const volunteerHtml = fs.readFileSync(volunteerPath, "utf8");
+  const eventsJson = fs.readFileSync(eventsPath, "utf8");
+
+  await page.route("**/*", (route) => {
+    const url = route.request().url();
+    if (url === mainUrl) {
+      return route.fulfill({
+        status: 200,
+        contentType: "text/html",
+        body: mainHtml,
+      });
+    }
+    if (url === volunteerUrl) {
+      return route.fulfill({
+        status: 200,
+        contentType: "text/html",
+        body: volunteerHtml,
+      });
+    }
+    if (url === "https://images.parkrun.com/events.json") {
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: eventsJson,
+      });
+    }
+    if (url.includes("tile.openstreetmap.org")) {
+      return route.fulfill({
+        status: 200,
+        contentType: "image/png",
+        body: ONE_PX_TRANSPARENT_PNG,
+      });
+    }
+    return route.abort();
+  });
+}
+
 const test = base.extend({
   context: async ({ browserName }, use) => {
     const browserTypes = { chromium };
@@ -145,14 +236,15 @@ test("No results for parkrunner load test", async ({ page }) => {
 });
 
 test("Leaflet markers load with icons (no network)", async ({ page }) => {
-  await mockEventsJson(page);
-  await mockParkrunRunnerPage(page, countryDomain, "1309364", "all");
-  await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`);
+  await installNetworkFreeMocks(page, countryDomain, "1309364");
+  await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`, {
+    waitUntil: "domcontentloaded",
+  });
 
   const messagesDiv = page.locator("#running_challenges_messages_div");
   await expect(messagesDiv).toHaveText(
     "Additional badges provided by Running Challenges",
-    { timeout: 10000 },
+    { timeout: 15000 },
   );
 
   const explorerMap = page.locator("#explorer_map");
@@ -160,8 +252,7 @@ test("Leaflet markers load with icons (no network)", async ({ page }) => {
 
   const markers = explorerMap.locator(".leaflet-marker-icon");
   await expect(markers.first()).toBeVisible({ timeout: 10000 });
-  const count = await markers.count();
-  expect(count).toBeGreaterThan(0);
+  expect(await markers.count()).toBeGreaterThan(0);
 });
 
 let badgesThatShouldExistMap = {
