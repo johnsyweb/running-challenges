@@ -147,7 +147,7 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
   Rebuilds the extensions via `script/update`, then runs `web-ext run` against the Firefox build so you can see changes in Firefox immediately.
   - If `PARKRUN_URL` is provided as the first argument, that URL is opened.
   - If no argument is given, the `PARKRUN_URL` environment variable is used if set.
-  - If neither is provided, it defaults to `https://www.parkrun.com.au/parkrunner/100388/all`.
+  - If neither is provided, it defaults to `https://www.parkrun.com.au/parkrunner/1001388/all`.
 
 - `./script/test`  
   Runs the JavaScript unit tests with coverage from `browser-extensions/common/js/tests`.

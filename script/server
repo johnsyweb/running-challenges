@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-DEFAULT_PARKRUN_URL="https://www.parkrun.com.au/parkrunner/100388/all"
+DEFAULT_PARKRUN_URL="https://www.parkrun.com.au/parkrunner/1001388/all"
 
 REQUESTED_URL="${1:-${PARKRUN_URL:-$DEFAULT_PARKRUN_URL}}"
 
