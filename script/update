@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+echo "Running script/update"
+
+"$ROOT_DIR/script/bootstrap"
+
+echo "Rebuilding Chrome extension..."
+bash build/extension-chrome/build.sh
+
+echo "Rebuilding Firefox extension..."
+bash build/extension-firefox/build.sh
+
+echo "script/update completed successfully."
+

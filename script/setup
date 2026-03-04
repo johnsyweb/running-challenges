@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+echo "Running script/setup"
+
+"$ROOT_DIR/script/bootstrap"
+
+echo "Building Chrome extension..."
+bash build/extension-chrome/build.sh
+
+echo "Building Firefox extension..."
+bash build/extension-firefox/build.sh
+
+echo "script/setup completed successfully."
+echo "You can now run ./script/server to launch Firefox with the extension installed."
+

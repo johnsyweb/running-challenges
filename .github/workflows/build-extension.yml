@@ -3,20 +3,14 @@ name: Extension Builder
 # Run this workflow every time a new commit pushed to your repository
 on:
   push:
-    branches: 
+    branches:
       - master
   pull_request:
 
 jobs:
-
   test-javascript-libraries:
     name: Test the Javascript libraries
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: browser-extensions/common/js/tests
 
     steps:
       # Checks out a copy of your repository on the ubuntu-latest machine
@@ -26,13 +20,11 @@ jobs:
       - name: Configure node v20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
-      - name: Install test framework dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm run test-with-coverage
+      - name: Run script/cibuild
+        run: ./script/cibuild
+        shell: bash
 
   # Set the job key. The key is displayed as the job name
   # when a job name is not provided
@@ -53,7 +45,7 @@ jobs:
       - name: Configure node v20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install web-ext tooling
         run: npm install -g web-ext
@@ -79,7 +71,7 @@ jobs:
   integration-test:
     name: UI Testing
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - build-extension
       - test-javascript-libraries
     strategy:
@@ -115,7 +107,6 @@ jobs:
         working-directory: browser-extensions/common/js/tests/ui-test
 
     steps:
-
       # Checks out a copy of the repository
       - name: Checkout code
         uses: actions/checkout@v4
@@ -132,7 +123,7 @@ jobs:
       - name: Configure node v20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install Required OS packages
         run: |
@@ -194,7 +185,7 @@ jobs:
   publish-extension:
     name: Push the build extensions somewhere
     runs-on: ubuntu-latest
-    needs: 
+    needs:
       - integration-test
     # if: startsWith(github.ref, 'refs/tags/v')
 
@@ -246,7 +237,6 @@ jobs:
             })
             */
         # if: startsWith(github.ref, 'refs/tags/v')
- 
 
       # - id: get-branch-version-tag
       #   uses: actions/github-script@v7
@@ -258,7 +248,6 @@ jobs:
       #       }
       #       core.setOutput('version_tag', version_tag)
       #   if: startsWith(github.ref, 'refs/tags/v')
-
       - run: echo "branch version tag is ${{steps.get-branch-version-tag.outputs.version_tag}}"
         # if: startsWith(github.ref, 'refs/tags/v')
 

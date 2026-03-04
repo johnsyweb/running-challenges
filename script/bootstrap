@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+echo "Running script/bootstrap"
+
+# Ensure web-ext is available for building and running the extensions
+if ! command -v web-ext >/dev/null 2>&1; then
+  echo "web-ext not found, installing it globally with npm..."
+  npm install --global web-ext
+fi
+
+# Ensure GNU sed is available on macOS, as required by the build scripts
+if [[ "${OSTYPE:-}" == darwin* ]]; then
+  if ! command -v gsed >/dev/null 2>&1; then
+    echo "gnu-sed (gsed) is required for extension builds on macOS." >&2
+    echo "Install it with: brew install gnu-sed" >&2
+    exit 1
+  fi
+fi
+
+# Install JavaScript test dependencies for the browser extension
+if [[ -d "browser-extensions/common/js/tests" ]]; then
+  echo "Installing JavaScript test dependencies..."
+  (
+    cd browser-extensions/common/js/tests
+    npm install
+  )
+fi
+
+echo "script/bootstrap completed successfully."
+
