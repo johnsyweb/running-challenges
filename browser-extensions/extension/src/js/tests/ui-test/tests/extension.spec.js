@@ -185,28 +185,16 @@ const test = base.extend({
   },
 });
 
-// await page.screenshot({ path: 'screenshot.png', fullPage: true });
-
 test("Basic extension load test", async ({ page }) => {
-  console.log(
-    `Expecting the extension to have been loaded from ${extensionPath}`,
-  );
+  await installNetworkFreeMocks(page, countryDomain, "1309364");
+  await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`, {
+    waitUntil: "domcontentloaded",
+  });
 
-  await page.goto(`https://www.${countryDomain}/parkrunner/1309364/all/`);
-
-  // Wait 3 seconds, this should be plenty as we are serving all the data locally and there shoudn't be
-  // any internet calls
-  await page.waitForTimeout(3000);
-
-  // This takes a screenshot of the entire page, which is probably a good idea to do early on,
-  // but we should really wait until the extension has loaded.
-  await page.screenshot({ path: "screenshot.png", fullPage: true });
-
-  let messagesDiv = page.locator("#running_challenges_messages_div");
-
+  const messagesDiv = page.locator("#running_challenges_messages_div");
   await expect(messagesDiv).toHaveText(
     "Additional badges provided by Running Challenges",
-    { timeout: 10000 },
+    { timeout: 15000 },
   );
 });
 
