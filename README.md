@@ -146,7 +146,7 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
   - If neither is provided, it defaults to `https://www.parkrun.com.au/parkrunner/1001388/all`.
 
 - `./script/test`
-  Runs the JavaScript unit tests with coverage via the `running-challenges-tests` pnpm workspace package (`browser-extensions/extension/src/js/tests`).
+  Runs the JavaScript unit tests with coverage via the `running-challenges-tests` pnpm workspace package (`browser-extensions/extension/src/js/tests`), then runs the Playwright UI tests in `browser-extensions/extension/src/js/tests/ui-test` (Chrome extension loaded via `@playwright/test`).
 
 - `./script/cibuild`  
   Wrapper suitable for CI servers; currently runs `script/test`.

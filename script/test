@@ -12,3 +12,12 @@ eval "$(mise activate bash)" 2>/dev/null || true
 echo "Running JavaScript unit tests with coverage..."
 pnpm --filter running-challenges-tests run test-with-coverage
 
+if [[ -d "browser-extensions/extension/src/js/tests/ui-test" ]]; then
+  echo "Running Playwright UI tests..."
+  (
+    cd browser-extensions/extension/src/js/tests/ui-test
+    npm install
+    npx playwright test
+  )
+fi
+
