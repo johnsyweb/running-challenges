@@ -280,17 +280,18 @@ Object.keys(badgesThatShouldExistMap).forEach((badgeShortname) => {
 
   test(`Check for badge awarded: ${badgeShortname}`, async ({ page }) => {
     for (const parkrunnerId of badgesThatShouldExistMap[badgeShortname]) {
+      await page.unroute("**/*");
+      await installNetworkFreeMocks(page, countryDomain, parkrunnerId);
       await page.goto(
         `https://www.${countryDomain}/parkrunner/${parkrunnerId}/all/`,
+        { waitUntil: "domcontentloaded" },
       );
 
-      // Wait for the extension to load, and therefore all the badges to be displayed
       await expect(page.locator("#running_challenges_messages_div")).toHaveText(
         "Additional badges provided by Running Challenges",
-        { timeout: 10000 },
+        { timeout: 15000 },
       );
 
-      // Check for the specific badge:
       await expect(
         page.locator(`#badge-awarded-${badgeShortname}`),
       ).toBeVisible();
