@@ -1235,7 +1235,7 @@ function create_challenge_map_standard(map_id, challenge_data, data) {
     .layers(base_maps, overlay_markers, layer_control_options)
     .addTo(mymap);
 
-  mymap.addControl(new L.Control.Fullscreen());
+  L.control.fullscreen().addTo(mymap);
 }
 
 function event_has_valid_location(event_info) {
