@@ -160,10 +160,11 @@ const test = base.extend({
   context: async ({ browserName }, use) => {
     const browserTypes = { chromium };
     const launchOptions = {
-      devtools: true,
-      headless: false,
+      channel: "chromium",
+      devtools: false,
+      headless: true,
       args: [
-        // `--headless=new`,
+        `--headless=new`,
         `--disable-extensions-except=${extensionPath}`,
         `--load-extension=${extensionPath}`,
       ],
