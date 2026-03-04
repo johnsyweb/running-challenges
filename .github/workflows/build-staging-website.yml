@@ -4,7 +4,7 @@ name: Staging Website Builder
 concurrency: staging-website-build
 
 # Run this workflow every time a new commit is pushed to any branch apart from the production one (master)
-on: 
+on:
   push:
     branches-ignore:
       - master
@@ -28,10 +28,10 @@ jobs:
       - name: 📂 Checkout code
         uses: actions/checkout@v4
 
-      - name: 💎 setup ruby
-        uses: ruby/setup-ruby@v1
+      - name: 💎 setup ruby with mise
+        uses: jdx/mise-action@v3
         with:
-          ruby-version: 3.1
+          install: true
 
       - name: Sanitise branch name
         shell: bash

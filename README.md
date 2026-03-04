@@ -155,6 +155,16 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
 - `./script/cibuild`  
   Wrapper suitable for CI servers; currently runs `script/test`.
 
+## Tool versions with mise
+
+To ensure consistent tool versions between local development and CI, this repository uses [`mise`](https://mise.jdx.dev/):
+
+- Tool versions are defined in `mise.toml` (for example, Node.js 20 and Ruby 3.1).
+- On a local machine:
+  - Install mise by following the instructions in the mise documentation.
+  - From the repository root, run `mise install` to install the configured toolchain.
+- In GitHub Actions, the [`jdx/mise-action`](https://github.com/jdx/mise-action) workflow step reads `mise.toml` and installs the same tool versions before running tests and builds.
+
 # Automated builds
 
 This repository uses GitHub Actions for continuous integration and deployment. The following workflows are configured:
@@ -272,9 +282,8 @@ This will remain as it always has, including the GitHub Actions build number.
 
 1. When everything has been tested and merged into master, tag master with the
    version in `build/version.sh`. This will trigger a GitHub Actions workflow to build and create a GitHub release.
-   `     git tag v0.7.5
- git push origin v0.7.5
- `
+   `    git tag v0.7.5
+git push origin v0.7.5`
 1. Watch the [GitHub Actions workflow](https://github.com/fraz3alpha/running-challenges/actions) run.
 1. Head over to the [releases](https://github.com/fraz3alpha/running-challenges/releases)
    tab in Github and find the release for the [version you tagged](https://github.com/fraz3alpha/running-challenges/releases/tag/v0.7.5).
