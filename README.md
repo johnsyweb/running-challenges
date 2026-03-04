@@ -303,6 +303,7 @@ git push origin v0.7.5`
 
 Additional documentation lives in README files in subfolders:
 
+- [pnpm-migration.md](pnpm-migration.md) — plan for unifying the extension codebase and managing dependencies with pnpm.
 - `build/README.md` — build-time dependencies (including `gnu-sed` on macOS).
 - `browser-extensions/common/README.md` — example parkrunner pages to help with manual testing.
 - `browser-extensions/common/js/README.md` — unit and automated browser testing for the extension.
