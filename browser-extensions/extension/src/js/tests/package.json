@@ -10,6 +10,9 @@
   },
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "jquery": "3.6.0"
+  },
   "devDependencies": {
     "jsdom": "18.x.x",
     "mocha": "9.x.x",

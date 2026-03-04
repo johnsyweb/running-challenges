@@ -116,9 +116,11 @@ source build/version.sh && export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
 pnpm --filter running-challenges-extension run build:extension
 ```
 
-This produces unpacked and packaged builds in `browser-extensions/chrome/build`
-and `browser-extensions/firefox/build` (including `web-ext-artifacts` with the
-`.zip` packages).
+Third-party libraries (jQuery, Leaflet, and plugins) are installed as npm
+dependencies and copied into the build; the build script uses the extension
+package’s `node_modules`. This produces unpacked and packaged builds in
+`browser-extensions/chrome/build` and `browser-extensions/firefox/build`
+(including `web-ext-artifacts` with the `.zip` packages).
 
 Your build of the extension is not signed, so Firefox does not allow you to install it directly from your built file.
 Instead, for testing purposes, you have to install it as a [temporary installation in Firefox](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/) (it automatically deletes itself when you quit Firefox).

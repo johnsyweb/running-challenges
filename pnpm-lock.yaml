@@ -9,12 +9,35 @@ importers:
   .: {}
 
   browser-extensions/extension:
+    dependencies:
+      d3-voronoi:
+        specifier: 1.1.4
+        version: 1.1.4
+      jquery:
+        specifier: 3.6.0
+        version: 3.6.0
+      leaflet:
+        specifier: 1.3.1
+        version: 1.3.1
+      leaflet-extra-markers:
+        specifier: 1.0.6
+        version: 1.0.6
+      leaflet.fullscreen:
+        specifier: 1.1.0
+        version: 1.1.0
+      leaflet.markercluster:
+        specifier: 1.3.0
+        version: 1.3.0(leaflet@1.3.1)
     devDependencies:
       web-ext:
         specifier: ^9.3.0
         version: 9.3.0
 
   browser-extensions/extension/src/js/tests:
+    dependencies:
+      jquery:
+        specifier: 3.6.0
+        version: 3.6.0
     devDependencies:
       jsdom:
         specifier: 18.x.x
@@ -618,6 +641,9 @@ packages:
   cssstyle@2.3.0:
     resolution: {integrity: sha512-AZL67abkUzIuvcHqk7c09cezpGNcxUxU4Ioi/05xHk4DQeTkWmGYftIE6ctU6AEt+Gn4n1lDStOtj7FKycP71A==}
     engines: {node: '>=8'}
+
+  d3-voronoi@1.1.4:
+    resolution: {integrity: sha512-dArJ32hchFsrQ8uMiTBLq256MpnZjeuBtdHpaDlYuQyjU0CVzCJl/BVW+SkszaAeH95D/8gxqAhgx0ouAWAfRg==}
 
   data-urls@3.0.2:
     resolution: {integrity: sha512-Jy/tj3ldjZJo63sVAvg6LHt2mHvl4V6AgRAmNDtLdm7faqtsx+aJG42rsyCo9JCoRVKwPFzKlIPx3DIibwSIaQ==}
@@ -1327,6 +1353,9 @@ packages:
   jose@5.9.6:
     resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
 
+  jquery@3.6.0:
+    resolution: {integrity: sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -1392,6 +1421,20 @@ packages:
   latest-version@9.0.0:
     resolution: {integrity: sha512-7W0vV3rqv5tokqkBAFV1LbR7HPOWzXQDpDgEuib/aJ1jsZZx6x3c2mBI+TJhJzOhkGeaLbCKEHXEXLfirtG2JA==}
     engines: {node: '>=18'}
+
+  leaflet-extra-markers@1.0.6:
+    resolution: {integrity: sha512-pksPfTFLKWCHnvZt8iKhKxlPnCTCpkoT+ZBZ7Si8GYiE6B2hAWHjd4Pxc7pm8jjkPJS73tjPcal09VChP8EAiw==}
+
+  leaflet.fullscreen@1.1.0:
+    resolution: {integrity: sha512-v6eV8N24YZPufGTwm+IXYc9Qxw8Z3DoxR7KK5bJWVeUR/Jq8p6eG5vZp7UvlD2vMmiUBacz8+62+ftMTklBFIw==}
+
+  leaflet.markercluster@1.3.0:
+    resolution: {integrity: sha512-bHBaI8kTaLrZxI/ZP7pnNaS8WCKKz98BU1//B5OH9b/kTk6IriduvDtMFGlGBYYr/ymuXCB9lO7HsGBr5dSw5w==}
+    peerDependencies:
+      leaflet: ~1.0.3
+
+  leaflet@1.3.1:
+    resolution: {integrity: sha512-adQOIzh+bfdridLM1xIgJ9VnJbAUY3wqs/ueF+ITla+PLQ1z47USdBKUf+iD9FuUA8RtlT6j6hZBfZoA6mW+XQ==}
 
   levn@0.3.0:
     resolution: {integrity: sha512-0OO4y2iOHix2W6ujICbKIaEQXvFQHue65vUG3pb5EUomzPI90z9hsA1VsO/dbIIpC53J8gxM9Q4Oho0jrCM/yA==}
@@ -2935,6 +2978,8 @@ snapshots:
     dependencies:
       cssom: 0.3.8
 
+  d3-voronoi@1.1.4: {}
+
   data-urls@3.0.2:
     dependencies:
       abab: 2.0.6
@@ -3643,6 +3688,8 @@ snapshots:
 
   jose@5.9.6: {}
 
+  jquery@3.6.0: {}
+
   js-tokens@4.0.0: {}
 
   js-yaml@3.14.2:
@@ -3730,6 +3777,16 @@ snapshots:
   latest-version@9.0.0:
     dependencies:
       package-json: 10.0.1
+
+  leaflet-extra-markers@1.0.6: {}
+
+  leaflet.fullscreen@1.1.0: {}
+
+  leaflet.markercluster@1.3.0(leaflet@1.3.1):
+    dependencies:
+      leaflet: 1.3.1
+
+  leaflet@1.3.1: {}
 
   levn@0.3.0:
     dependencies:

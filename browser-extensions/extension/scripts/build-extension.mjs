@@ -59,17 +59,51 @@ function buildBrowser(browser) {
   }
   fs.mkdirSync(buildDir, { recursive: true });
 
+  const nm = path.join(extensionDir, "node_modules");
+
   run(
     `mkdir -p "${buildDir}/images/badges" "${buildDir}/images/flags" "${buildDir}/css/third-party" "${buildDir}/js/lib/third-party"`,
   );
   run(`cp -r images/badges/256x256/*.png "${buildDir}/images/badges/"`);
   run(`cp -r images/flags/twemoji/png/*.png "${buildDir}/images/flags/"`);
   run(`cp -r images/logo "${buildDir}/images/"`);
+
   run(
-    `cp -r css/third-party/leaflet css/third-party/leaflet-extramarkers css/third-party/leaflet-fullscreen css/third-party/leaflet-markercluster "${buildDir}/css/third-party/"`,
+    `mkdir -p "${buildDir}/js/lib/third-party/jquery" "${buildDir}/js/lib/third-party/leaflet" "${buildDir}/js/lib/third-party/leaflet-fullscreen" "${buildDir}/js/lib/third-party/leaflet-markercluster" "${buildDir}/js/lib/third-party/leaflet-extramarkers" "${buildDir}/js/lib/third-party/d3-voronoi"`,
   );
   run(
-    `cp -r js/lib/third-party/jquery js/lib/third-party/leaflet js/lib/third-party/leaflet-canvasicon js/lib/third-party/leaflet-extramarkers js/lib/third-party/leaflet-fullscreen js/lib/third-party/leaflet-markercluster js/lib/third-party/leaflet-piechart js/lib/third-party/d3-voronoi "${buildDir}/js/lib/third-party/"`,
+    `cp "${nm}/jquery/dist/jquery.js" "${buildDir}/js/lib/third-party/jquery/jquery-3.6.0.js"`,
+  );
+  run(
+    `cp "${nm}/leaflet/dist/leaflet.js" "${buildDir}/js/lib/third-party/leaflet/leaflet-1.3.1.js"`,
+  );
+  run(
+    `cp "${nm}/leaflet.fullscreen/Control.FullScreen.js" "${buildDir}/js/lib/third-party/leaflet-fullscreen/leaflet-fullscreen-1.1.0.js"`,
+  );
+  run(
+    `cp "${nm}/leaflet.markercluster/dist/leaflet.markercluster.js" "${buildDir}/js/lib/third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js"`,
+  );
+  run(
+    `cp "${nm}/leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js" "${buildDir}/js/lib/third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.6.js"`,
+  );
+  run(
+    `cp "${nm}/d3-voronoi/dist/d3-voronoi.js" "${buildDir}/js/lib/third-party/d3-voronoi/d3-voronoi.js"`,
+  );
+  run(
+    `cp -r js/lib/third-party/leaflet-canvasicon js/lib/third-party/leaflet-piechart "${buildDir}/js/lib/third-party/"`,
+  );
+
+  run(
+    `mkdir -p "${buildDir}/css/third-party/leaflet" "${buildDir}/css/third-party/leaflet-fullscreen" "${buildDir}/css/third-party/leaflet-markercluster" "${buildDir}/css/third-party/leaflet-extramarkers"`,
+  );
+  run(
+    `cp -r css/third-party/leaflet css/third-party/leaflet-fullscreen css/third-party/leaflet-extramarkers "${buildDir}/css/third-party/"`,
+  );
+  run(
+    `cp "${nm}/leaflet.markercluster/dist/MarkerCluster.css" "${buildDir}/css/third-party/leaflet-markercluster/"`,
+  );
+  run(
+    `cp "${nm}/leaflet.markercluster/dist/MarkerCluster.Default.css" "${buildDir}/css/third-party/leaflet-markercluster/"`,
   );
   run(
     `rsync -av browser-extensions/extension/src/js "${buildDir}" --exclude tests`,
