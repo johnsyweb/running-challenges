@@ -28,17 +28,17 @@ updates:
       - "github-actions"
       - "automated"
 
-  # Enable version updates for npm dependencies
-  - package-ecosystem: "npm"
-    directory: "/browser-extensions/extension/src/js/tests"
+  # Enable version updates for pnpm workspace (extension + running-challenges-tests)
+  - package-ecosystem: "pnpm"
+    directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
       timezone: "UTC"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 10
     groups:
-      npm-dependencies:
+      pnpm-dependencies:
         patterns:
           - "*"
     commit-message:
@@ -48,10 +48,10 @@ updates:
       - "fraz3alpha"
     labels:
       - "dependencies"
-      - "npm"
+      - "pnpm"
       - "automated"
 
-  # Enable version updates for npm dependencies in ui-test
+  # Enable version updates for npm dependencies in ui-test (separate package.json)
   - package-ecosystem: "npm"
     directory: "/browser-extensions/extension/src/js/tests/ui-test"
     schedule:

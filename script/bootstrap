@@ -45,14 +45,5 @@ if [[ "${OSTYPE:-}" == darwin* ]]; then
   fi
 fi
 
-# Install JavaScript test dependencies for the browser extension
-if [[ -d "browser-extensions/extension/src/js/tests" ]]; then
-  echo "Installing JavaScript test dependencies..."
-  (
-    cd browser-extensions/extension/src/js/tests
-    npm install
-  )
-fi
-
 echo "script/bootstrap completed successfully."
 

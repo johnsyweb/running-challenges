@@ -143,8 +143,8 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
   - If no argument is given, the `PARKRUN_URL` environment variable is used if set.
   - If neither is provided, it defaults to `https://www.parkrun.com.au/parkrunner/1001388/all`.
 
-- `./script/test`  
-  Runs the JavaScript unit tests with coverage from `browser-extensions/extension/src/js/tests`.
+- `./script/test`
+  Runs the JavaScript unit tests with coverage via the `running-challenges-tests` pnpm workspace package (`browser-extensions/extension/src/js/tests`).
 
 - `./script/cibuild`  
   Wrapper suitable for CI servers; currently runs `script/test`.
@@ -193,7 +193,7 @@ This repository uses [Dependabot](https://docs.github.com/en/code-security/depen
 ## Automated Updates
 
 - **GitHub Actions**: All workflow actions are automatically updated weekly
-- **npm Dependencies**: Node.js packages in test directories are updated weekly
+- **pnpm Dependencies**: Extension and unit-test workspace packages are updated weekly (root lockfile)
 - **Ruby/Bundler**: Jekyll and other Ruby gems are updated weekly
 - **Schedule**: Every Monday at 9:00 AM UTC
 
@@ -203,7 +203,7 @@ Dependabot is configured in `.github/dependabot.yml` and will:
 
 - Create pull requests for outdated dependencies
 - Group related updates to reduce PR noise
-- Assign appropriate labels (`dependencies`, `github-actions`, `npm`, `ruby`, `bundler`, `automated`)
+- Assign appropriate labels (`dependencies`, `github-actions`, `pnpm`, `ruby`, `bundler`, `automated`)
 - Use consistent commit message format (`chore:` prefix)
 
 ## Manual Updates
@@ -211,7 +211,7 @@ Dependabot is configured in `.github/dependabot.yml` and will:
 If you need to update dependencies manually:
 
 - **GitHub Actions**: Edit workflow files in `.github/workflows/`
-- **npm**: Run `npm update` in the relevant test directories
+- **pnpm**: Run `pnpm update` at the repo root (or `pnpm update --filter running-challenges-tests` for test deps only)
 - **Ruby**: Run `bundle update` in the `website/` directory
 
 # Adding a new volunteer role

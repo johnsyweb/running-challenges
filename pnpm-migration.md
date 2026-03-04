@@ -37,7 +37,7 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
    - Update GitHub Actions to run the pnpm-based build and tests; remove or archive the old bash extension build scripts once the new path is stable.
 
 5. **Optional later steps**
-   - Move unit tests under the same workspace and have them import from `src/` so they run against the same code the extension uses.
+   - ~~Move unit tests under the same workspace and have them import from `src/` so they run against the same code the extension uses.~~ ✅ _Done_ — `browser-extensions/extension/src/js/tests` is now a pnpm workspace package (`running-challenges-tests`); `script/test` and CI run tests via `pnpm --filter running-challenges-tests run test-with-coverage`; bootstrap no longer runs a separate `npm install` in the tests dir.
    - Replace vendored third-party JS/CSS with npm packages and add a small bundler (e.g. esbuild) for content/background scripts if desired.
 
 This plan is intended to be done in small, reviewable steps so the extension keeps building and passing tests after each change.

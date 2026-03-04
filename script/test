@@ -7,13 +7,8 @@ cd "$ROOT_DIR"
 echo "Running script/test"
 
 "$ROOT_DIR/script/bootstrap"
+eval "$(mise activate bash)" 2>/dev/null || true
 
-if [[ -d "browser-extensions/extension/src/js/tests" ]]; then
-  cd browser-extensions/extension/src/js/tests
-  echo "Running JavaScript unit tests with coverage..."
-  npm run test-with-coverage
-else
-  echo "No JavaScript tests directory found at browser-extensions/extension/src/js/tests" >&2
-  exit 1
-fi
+echo "Running JavaScript unit tests with coverage..."
+pnpm --filter running-challenges-tests run test-with-coverage
 

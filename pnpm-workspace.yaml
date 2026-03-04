@@ -1,2 +1,3 @@
 packages:
   - "browser-extensions/extension"
+  - "browser-extensions/extension/src/js/tests"
