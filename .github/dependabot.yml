@@ -30,7 +30,7 @@ updates:
 
   # Enable version updates for npm dependencies
   - package-ecosystem: "npm"
-    directory: "/browser-extensions/common/js/tests"
+    directory: "/browser-extensions/extension/src/js/tests"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -53,7 +53,7 @@ updates:
 
   # Enable version updates for npm dependencies in ui-test
   - package-ecosystem: "npm"
-    directory: "/browser-extensions/common/js/tests/ui-test"
+    directory: "/browser-extensions/extension/src/js/tests/ui-test"
     schedule:
       interval: "weekly"
       day: "monday"

@@ -108,7 +108,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: browser-extensions/common/js/tests/ui-test
+        working-directory: browser-extensions/extension/src/js/tests/ui-test
 
     steps:
       # Checks out a copy of the repository
@@ -119,7 +119,7 @@ jobs:
       - name: Download all built extension packages
         uses: actions/download-artifact@v4
         with:
-          path: browser-extensions/common/js/tests/ui-test/extension-binaries
+          path: browser-extensions/extension/src/js/tests/ui-test/extension-binaries
 
       - name: Show built extension packages
         run: ls -lR extension-binaries
@@ -178,8 +178,8 @@ jobs:
         with:
           name: ui-tests-chrome-${{ matrix.country_hostname }}
           path: |
-            browser-extensions/common/js/tests/ui-test/playwright-report/
-            browser-extensions/common/js/tests/ui-test/screenshot.png
+            browser-extensions/extension/src/js/tests/ui-test/playwright-report/
+            browser-extensions/extension/src/js/tests/ui-test/screenshot.png
           retention-days: 30
 
   # This stage will run once the extensions have been built, and should only run if they were successful.

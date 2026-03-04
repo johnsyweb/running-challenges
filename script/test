@@ -8,12 +8,12 @@ echo "Running script/test"
 
 "$ROOT_DIR/script/bootstrap"
 
-if [[ -d "browser-extensions/common/js/tests" ]]; then
-  cd browser-extensions/common/js/tests
+if [[ -d "browser-extensions/extension/src/js/tests" ]]; then
+  cd browser-extensions/extension/src/js/tests
   echo "Running JavaScript unit tests with coverage..."
   npm run test-with-coverage
 else
-  echo "No JavaScript tests directory found at browser-extensions/common/js/tests" >&2
+  echo "No JavaScript tests directory found at browser-extensions/extension/src/js/tests" >&2
   exit 1
 fi
 

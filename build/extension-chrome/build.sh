@@ -38,10 +38,14 @@ cp -r js/lib/third-party/leaflet-markercluster ${TMP_BUILD_DIR}/js/lib/third-par
 cp -r js/lib/third-party/leaflet-piechart ${TMP_BUILD_DIR}/js/lib/third-party/
 cp -r js/lib/third-party/d3-voronoi ${TMP_BUILD_DIR}/js/lib/third-party/
 
-# Copy the common code, but don't include the tests
-rsync -av browser-extensions/common/js ${TMP_BUILD_DIR} --exclude tests 
-cp -r browser-extensions/common/html ${TMP_BUILD_DIR}/
-cp -r browser-extensions/common/css ${TMP_BUILD_DIR}/
+# Copy the extension source (exclude tests)
+rsync -av browser-extensions/extension/src/js ${TMP_BUILD_DIR} --exclude tests
+cp -r browser-extensions/extension/src/html ${TMP_BUILD_DIR}/
+cp -r browser-extensions/extension/src/css ${TMP_BUILD_DIR}/
+# Copy extension images (e.g. maps/markers) into build images
+if [[ -d "browser-extensions/extension/src/images" ]]; then
+  cp -r browser-extensions/extension/src/images/* ${TMP_BUILD_DIR}/images/
+fi
 
 # Write out the version file
 echo "var extensionVersion = \"${EXTENSION_BUILD_VERSION}\"" > ${TMP_BUILD_DIR}/js/lib/version.js

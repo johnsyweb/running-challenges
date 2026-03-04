@@ -22,7 +22,7 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
    - Add `pnpm-workspace.yaml` and `browser-extensions/extension/package.json` with `web-ext` and any shared dev deps.
    - Run `pnpm install` from the repo root; ensure CI uses pnpm (e.g. `pnpm install --frozen-lockfile`) where the extension is built or tested.
 
-2. **Restructure into a single `src/` tree**
+2. **Restructure into a single `src/` tree** ✅ *Done*
    - Create `browser-extensions/extension/src/` and move/copy current `browser-extensions/common` content into it (e.g. `src/js`, `src/html`, `src/css`).
    - Define manifest fragments or overrides (e.g. `manifest.base.json` + `manifest.chrome.json` / `manifest.firefox.json`) so one merge step produces the final manifest per browser.
    - Keep `patches/chrome` and `patches/firefox` for any remaining CSS/asset differences; avoid browser-specific JS unless necessary.

@@ -1,0 +1,46 @@
+{
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{70afe5fd-82a7-4300-9b3e-06ac0bd1c92d}"
+    }
+  },
+  "background": {
+    "scripts": ["js/background.js"]
+  },
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "https://www.parkrun.ca/*",
+        "https://www.parkrun.co.at/*",
+        "https://www.parkrun.co.nl/*",
+        "https://www.parkrun.co.nz/*",
+        "https://www.parkrun.co.za/*",
+        "https://www.parkrun.com.au/*",
+        "https://www.parkrun.com.de/*",
+        "https://www.parkrun.dk/*",
+        "https://www.parkrun.fi/*",
+        "https://www.parkrun.fr/*",
+        "https://www.parkrun.ie/*",
+        "https://www.parkrun.it/*",
+        "https://www.parkrun.jp/*",
+        "https://www.parkrun.lt/*",
+        "https://www.parkrun.my/*",
+        "https://www.parkrun.no/*",
+        "https://www.parkrun.org.uk/*",
+        "https://www.parkrun.pl/*",
+        "https://www.parkrun.ru/*",
+        "https://www.parkrun.se/*",
+        "https://www.parkrun.sg/*",
+        "https://www.parkrun.us/*"
+      ],
+      "resources": [
+        "/images/badges/*.png",
+        "/images/logo/*.png",
+        "/images/maps/markers/*.png",
+        "/images/flags/*.png",
+        "/html/*.html",
+        "/css/*"
+      ]
+    }
+  ]
+}

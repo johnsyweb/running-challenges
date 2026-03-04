@@ -7,7 +7,7 @@ This project uses [Mocha] for unit testing.
 To run the unit tests locally:
 
 ```sh
-cd browser-extensions/common/js/tests
+cd browser-extensions/extension/src/js/tests
 npm install
 npm run test-with-coverage
 ```

@@ -84,7 +84,7 @@ docker run --rm -v `pwd`:/rc rc:latest
 ## Browser Extensions: non-Docker build
 
 The bulk of the code that is common to the Chrome and Firefox extensions lives
-in the `browser-extensions/common` directory, and is supplemented by additional
+in the `browser-extensions/extension/src` directory, and is supplemented by additional
 browser-specific files and libraries from either `browser-extensions/chrome` or
 `browser-extensions/firefox` when the extension is built.
 
@@ -150,7 +150,7 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
   - If neither is provided, it defaults to `https://www.parkrun.com.au/parkrunner/1001388/all`.
 
 - `./script/test`  
-  Runs the JavaScript unit tests with coverage from `browser-extensions/common/js/tests`.
+  Runs the JavaScript unit tests with coverage from `browser-extensions/extension/src/js/tests`.
 
 - `./script/cibuild`  
   Wrapper suitable for CI servers; currently runs `script/test`.
@@ -226,10 +226,10 @@ Occasionally parkrun create a new volunteer role, for example the "Car Park Mars
 which needs to be added in. By default the extension won't pick up these unknown
 roles, and they will need adding in in a few places:
 
-- Add the name of the role, and any known translations to `browser-extensions/common/js/lib/i18n.js`,
+- Add the name of the role, and any known translations to `browser-extensions/extension/src/js/lib/i18n.js`,
   putting an entry in at least the `default` section.
 - Add the `name` and a suitable `shortname` to the `generate_volunteer_challenge_data()`
-  function in `browser-extensions/common/js/lib/challenges.js`
+  function in `browser-extensions/extension/src/js/lib/challenges.js`
 - Create the new badge as a layer in `images/badges/256x256/badges.xcf`, and export
   it as a `.png` file.
 - Follow the instructions in `images/badges/README.md` to generate the star badges.
@@ -248,7 +248,7 @@ It is impossible to add a new country until the new website is made live, and th
 - Add the ISO code to the list of flags for the website under the `flags.yml` data file.
 - Get the flag from https://emojipedia.org/twitter/twemoji-2.6/ as described in the flags README.
 - Add the country code and country name to `background.js`
-- Update `browser-extensions/common/js/tests/ui-test/update.sh` with the new parkrun domain, and run the script to pull in new test files
+- Update `browser-extensions/extension/src/js/tests/ui-test/update.sh` with the new parkrun domain, and run the script to pull in new test files
 - Add the new country to the Github actions test list: `.github/workflows/build-extension.yml`
 
 # Version numbers
@@ -304,10 +304,10 @@ Additional documentation lives in README files in subfolders:
 
 - [pnpm-migration.md](pnpm-migration.md) — plan for unifying the extension codebase and managing dependencies with pnpm.
 - `build/README.md` — build-time dependencies (including `gnu-sed` on macOS).
-- `browser-extensions/common/README.md` — example parkrunner pages to help with manual testing.
-- `browser-extensions/common/js/README.md` — unit and automated browser testing for the extension.
-- `browser-extensions/common/js/tests/ui-test/README.md` — Playwright-based UI testing notes.
-- `browser-extensions/common/css/README.md` — notes on custom CSS for the extension.
+- `browser-extensions/extension/src/README.md` — example parkrunner pages to help with manual testing.
+- `browser-extensions/extension/src/js/README.md` — unit and automated browser testing for the extension.
+- `browser-extensions/extension/src/js/tests/ui-test/README.md` — Playwright-based UI testing notes.
+- `browser-extensions/extension/src/css/README.md` — notes on custom CSS for the extension.
 - `images/README.md` — general image guidelines.
 - `images/badges/README.md` — challenge badge image generation and star overlays.
 - `images/flags/README.md` — adding and attributing new country flags.

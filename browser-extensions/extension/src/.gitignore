@@ -1,4 +1,4 @@
-# Allow copying built files into common for a faster development feedback
+# Allow copying built files into this directory for a faster development feedback
 # cycle.
 /css/third-party/
 /images/badges/
