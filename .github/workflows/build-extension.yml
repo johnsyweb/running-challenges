@@ -13,17 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install toolchain with mise
         uses: jdx/mise-action@v3
         with:
           install: true
 
-      # Checks out a copy of your repository on the ubuntu-latest machine
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Configure node v20
-        run: node --version
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Run script/cibuild
         run: ./script/cibuild
@@ -41,17 +40,19 @@ jobs:
         browser: ["chrome", "firefox"]
 
     steps:
-      # Checks out a copy of your repository on the ubuntu-latest machine
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure node v20
+      - name: Install toolchain with mise
         uses: jdx/mise-action@v3
         with:
           install: true
 
-      - name: Install web-ext tooling
-        run: npm install -g web-ext
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Add pnpm bin to PATH
+        run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
 
       # Runs a script
       - name: Build ${{ matrix.browser }} Extension

@@ -18,7 +18,7 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
 
 ## How
 
-1. **Introduce pnpm and extension package**
+1. **Introduce pnpm and extension package** ✅ *Done*
    - Add `pnpm-workspace.yaml` and `browser-extensions/extension/package.json` with `web-ext` and any shared dev deps.
    - Run `pnpm install` from the repo root; ensure CI uses pnpm (e.g. `pnpm install --frozen-lockfile`) where the extension is built or tested.
 

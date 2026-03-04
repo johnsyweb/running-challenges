@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+# Prefer web-ext from pnpm workspace when present
+export PATH="${ROOT_DIR}/node_modules/.bin:${PATH}"
+
 echo "Running script/update"
 
 "$ROOT_DIR/script/bootstrap"
