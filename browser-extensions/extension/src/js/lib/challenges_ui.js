@@ -25,6 +25,42 @@
  * ]
  */
 
+function get_extension_url(path) {
+  if (
+    typeof browser !== "undefined" &&
+    browser.runtime &&
+    browser.runtime.getURL
+  ) {
+    return browser.runtime.getURL(path);
+  }
+  if (
+    typeof chrome !== "undefined" &&
+    chrome.runtime &&
+    chrome.runtime.getURL
+  ) {
+    return chrome.runtime.getURL(path);
+  }
+  return path;
+}
+
+function apply_fullscreen_icon_styles() {
+  try {
+    var control = document.querySelector(".leaflet-control-zoom-fullscreen");
+    if (!control) return;
+    var iconPath =
+      window.devicePixelRatio && window.devicePixelRatio > 1
+        ? "css/third-party/leaflet-fullscreen/icon-fullscreen-2x.png"
+        : "css/third-party/leaflet-fullscreen/icon-fullscreen.png";
+    var url = get_extension_url(iconPath);
+    control.style.backgroundImage = 'url("' + url + '")';
+    control.style.backgroundSize = "26px 26px";
+    control.style.backgroundRepeat = "no-repeat";
+    control.style.backgroundPosition = "0 0";
+  } catch (e) {
+    // Intentionally ignore styling errors; map still works without icon.
+  }
+}
+
 function generate_challenge_table() {
   // console.log('Generating Challenge Table')
   var table = $("<table></table>");
@@ -540,6 +576,8 @@ function drawExplorerMap(divId, data) {
   var r_map = L.map(divId).setView(default_centre, 2);
   // Allow it to be fullscreen
   L.control.fullscreen().addTo(r_map);
+
+  apply_fullscreen_icon_styles();
 
   var map_data = {
     map: r_map,
@@ -1236,6 +1274,8 @@ function create_challenge_map_standard(map_id, challenge_data, data) {
     .addTo(mymap);
 
   L.control.fullscreen().addTo(mymap);
+
+  apply_fullscreen_icon_styles();
 }
 
 function event_has_valid_location(event_info) {
