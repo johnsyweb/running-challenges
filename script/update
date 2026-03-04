@@ -10,12 +10,14 @@ export PATH="${ROOT_DIR}/node_modules/.bin:${PATH}"
 echo "Running script/update"
 
 "$ROOT_DIR/script/bootstrap"
+eval "$(mise activate bash)" 2>/dev/null || true
 
-echo "Rebuilding Chrome extension..."
-bash build/extension-chrome/build.sh
+# shellcheck source=build/version.sh
+source "$ROOT_DIR/build/version.sh"
+export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
 
-echo "Rebuilding Firefox extension..."
-bash build/extension-firefox/build.sh
+echo "Rebuilding extensions (Chrome and Firefox)..."
+pnpm --filter running-challenges-extension run build:extension
 
 echo "script/update completed successfully."
 

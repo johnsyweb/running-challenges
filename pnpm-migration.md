@@ -18,20 +18,20 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
 
 ## How
 
-1. **Introduce pnpm and extension package** ✅ *Done*
+1. **Introduce pnpm and extension package** ✅ _Done_
    - Add `pnpm-workspace.yaml` and `browser-extensions/extension/package.json` with `web-ext` and any shared dev deps.
    - Run `pnpm install` from the repo root; ensure CI uses pnpm (e.g. `pnpm install --frozen-lockfile`) where the extension is built or tested.
 
-2. **Restructure into a single `src/` tree** ✅ *Done*
+2. **Restructure into a single `src/` tree** ✅ _Done_
    - Create `browser-extensions/extension/src/` and move/copy current `browser-extensions/common` content into it (e.g. `src/js`, `src/html`, `src/css`).
    - Define manifest fragments or overrides (e.g. `manifest.base.json` + `manifest.chrome.json` / `manifest.firefox.json`) so one merge step produces the final manifest per browser.
    - Keep `patches/chrome` and `patches/firefox` for any remaining CSS/asset differences; avoid browser-specific JS unless necessary.
 
-3. **Add Node build script**
+3. **Add Node build script** ✅ _Done_
    - Implement a script that: (a) copies `src/` and static assets into a temp dir, (b) writes version and build ID into generated files, (c) merges in the correct manifest per target, (d) applies the relevant patches, (e) runs `web-ext build` (and optionally `web-ext lint` for Firefox) for each target.
    - Output remains `browser-extensions/chrome/build` and `browser-extensions/firefox/build` (or equivalent) so existing CI and `./script/server` behaviour stay the same.
 
-4. **Point scripts and CI at the new build**
+4. **Point scripts and CI at the new build** ✅ _Done_
    - Change `script/bootstrap` to use pnpm for installing extension tooling and test deps where appropriate.
    - Change `script/update` / `script/setup` to run the Node build script (e.g. `pnpm run build:extension` or similar) instead of `build/extension-chrome/build.sh` and `build/extension-firefox/build.sh`.
    - Update GitHub Actions to run the pnpm-based build and tests; remove or archive the old bash extension build scripts once the new path is stable.

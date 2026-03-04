@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Build tooling for the Running Challenges browser extension",
+  "scripts": {
+    "build:extension": "node scripts/build-extension.mjs"
+  },
   "devDependencies": {
     "web-ext": "^9.3.0"
   }

@@ -28,16 +28,9 @@ jobs:
         run: ./script/cibuild
         shell: bash
 
-  # Set the job key. The key is displayed as the job name
-  # when a job name is not provided
   build-extension:
-    # Name the Job
     name: Build the extension
-    # Set the type of machine to run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        browser: ["chrome", "firefox"]
 
     steps:
       - name: Checkout code
@@ -51,26 +44,25 @@ jobs:
       - name: Install pnpm dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Add pnpm bin to PATH
-        run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
-
-      # Runs a script
-      - name: Build ${{ matrix.browser }} Extension
+      - name: Build extensions (Chrome and Firefox)
         run: |
-          echo "Building extension for ${{ matrix.browser }} at `date`"
-          # Make the build script executable
-          chmod +x ./build/extension-${{ matrix.browser }}/build.sh
-          # Build the extension
-          ./build/extension-${{ matrix.browser }}/build.sh
-        shell: bash
+          source build/version.sh
+          export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
+          pnpm --filter running-challenges-extension run build:extension
         env:
           EXTENSION_BUILD_ID: ${{ github.run_number }}
 
-      - name: Upload build extension package
+      - name: Upload Chrome extension package
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.browser }}-extension-package
-          path: browser-extensions/${{ matrix.browser }}/build/web-ext-artifacts/running_challenges-*.zip
+          name: chrome-extension-package
+          path: browser-extensions/chrome/build/web-ext-artifacts/running_challenges-chrome-*.zip
+
+      - name: Upload Firefox extension package
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension-package
+          path: browser-extensions/firefox/build/web-ext-artifacts/running_challenges-firefox-*.zip
 
   integration-test:
     name: UI Testing

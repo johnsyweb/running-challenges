@@ -100,31 +100,25 @@ which is used for packaging both the Chrome and Firefox extensions. The lint
 checking is of limited use for Chrome, but is still run for reference. It can be
 installed with `npm install --global web-ext`.
 
-### Chrome Extension
+### Building the extensions
 
-The Chrome extension is the original version, and can be built by running the build
-script from the root of the repository:
-
-```
-bash ./build/extension-chrome/build.sh
-```
-
-This will create an unpacked version of the extension in `browser-extensions/chrome/build`,
-together with a packaged version in the `web-ext-artifacts` directory.
-
-### Firefox Addon
-
-The Firefox addon is built from largely the same code as the Chrome extension
-with a few small tweaks (such as a different manifest file, and some `sed`
-replacements). It uses a separate build script from the Chrome version, but is
-built in an identical way:
+Both the Chrome and Firefox extensions are built from a single source tree under
+`browser-extensions/extension/src/`. The recommended way to build is:
 
 ```
-bash ./build/extension-firefox/build.sh
+./script/setup
 ```
 
-This will create an unpacked version of the extension in `browser-extensions/firefox/build`,
-together with a packaged version in the `web-ext-artifacts` directory.
+or, after bootstrapping, `./script/update`. You can also build directly with:
+
+```
+source build/version.sh && export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
+pnpm --filter running-challenges-extension run build:extension
+```
+
+This produces unpacked and packaged builds in `browser-extensions/chrome/build`
+and `browser-extensions/firefox/build` (including `web-ext-artifacts` with the
+`.zip` packages).
 
 Your build of the extension is not signed, so Firefox does not allow you to install it directly from your built file.
 Instead, for testing purposes, you have to install it as a [temporary installation in Firefox](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/) (it automatically deletes itself when you quit Firefox).
@@ -138,10 +132,10 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
   Installs core tooling (`web-ext`) and JavaScript test dependencies, and validates that `gnu-sed` (`gsed`) is available on macOS (see `build/README.md` for details).
 
 - `./script/setup`  
-  Runs `script/bootstrap`, then builds both the Chrome and Firefox extensions using the existing build scripts.
+  Runs `script/bootstrap`, then builds both the Chrome and Firefox extensions via the Node build script.
 
 - `./script/update`  
-  Re-runs the Chrome and Firefox build scripts, and is safe to run after pulling new changes.
+  Rebuilds both extensions (after bootstrap), and is safe to run after pulling new changes.
 
 - `./script/server [PARKRUN_URL]`  
   Rebuilds the extensions via `script/update`, then runs `web-ext run` against the Firefox build so you can see changes in Firefox immediately.
