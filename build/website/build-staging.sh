@@ -57,7 +57,7 @@ cp -r css/third-party/leaflet-markercluster website/assets/css/third-party/
 # Replace the placeholders in the map includes, there is probably a better way to do this
 # ${SED} -i "s/data\/geo-.*.js/data\/geo-${RUNNING_CHALLENGES_DATA_COMMIT}.js/" website/_pages/map.md
 # ${SED} -i "s/data\/special-events-.*.js/data\/special-events-${RUNNING_CHALLENGES_DATA_COMMIT}.js/" website/_pages/map.md
-# based on https://jekyllrb.com/docs/continuous-integration/travis-ci/
+# originally based on https://jekyllrb.com/docs/continuous-integration/
 
 # Move into the website directory
 cd website
@@ -95,6 +95,6 @@ git remote add staging https://${RUNNING_CHALLENGES_GITHUB_TOKEN}@github.com/fra
 # Create a new branch, and commit all the code
 git checkout -b gh-pages
 git add -A
-git commit -m 'Travis build for staging'
+git commit -m 'CI build for staging'
 git log -1
 git push --force staging gh-pages

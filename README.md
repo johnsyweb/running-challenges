@@ -246,7 +246,7 @@ It is impossible to add a new country until the new website is made live, and th
 
 There hasn't been any real consistency in how the versions have been numbered, with the versions mostly going up
 a point release when something was changed. The only thing that has been consistent is that the last number has
-referred back to the Travis build that generated the release.
+referred back to the GitHub Actions build that generated the release.
 
 To make this more consistent, from January 2020 the numbering, which follows the format
 `<major>.<minor>.<patch>.<build-number>` will refer to:
@@ -273,8 +273,8 @@ This will remain as it always has, including the GitHub Actions build number.
 1. When everything has been tested and merged into master, tag master with the
    version in `build/version.sh`. This will trigger a GitHub Actions workflow to build and create a GitHub release.
    `     git tag v0.7.5
-    git push origin v0.7.5
-    `
+ git push origin v0.7.5
+ `
 1. Watch the [GitHub Actions workflow](https://github.com/fraz3alpha/running-challenges/actions) run.
 1. Head over to the [releases](https://github.com/fraz3alpha/running-challenges/releases)
    tab in Github and find the release for the [version you tagged](https://github.com/fraz3alpha/running-challenges/releases/tag/v0.7.5).

@@ -23,18 +23,22 @@ Laura: https://www.google.com/maps/search/?api=1&query=50.99635012087909,-4.6048
 
 ## Automated Testing
 
-We had added a Mocha test framework to test the Javascript libraries, and the testcases are found in the 
+We had added a Mocha test framework to test the Javascript libraries, and the testcases are found in the
 `js/test` directory.
 
 We might wish to publish our code coverage metrics like this: https://maximilianschmitt.me/posts/istanbul-code-coverage-badge-github/.
 
-Currently they will just be printed to the Travis output
+Currently they will just be printed to the GitHub Actions logs.
 
 Run the tests in the `js` directory with:
+
 ```
 npm test
 ```
+
 Or, if you want the coverage report:
+
 ```
 npm run test-with-coverage
 ``
+```
