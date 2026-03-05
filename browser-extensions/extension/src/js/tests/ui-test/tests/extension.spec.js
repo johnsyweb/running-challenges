@@ -224,6 +224,33 @@ test("Leaflet markers load with icons (no network)", async ({ page }) => {
   expect(await markers.count()).toBeGreaterThan(0);
 });
 
+test("Explorer map shows country completion pie charts", async ({ page }) => {
+  await installNetworkFreeMocks(page, countryDomain, "2705084");
+  await page.goto(`https://www.${countryDomain}/parkrunner/2705084/all/`, {
+    waitUntil: "domcontentloaded",
+  });
+
+  const messagesDiv = page.locator("#running_challenges_messages_div");
+  await expect(messagesDiv).toHaveText(
+    "Additional badges provided by Running Challenges",
+    { timeout: 15000 },
+  );
+
+  const explorerMap = page.locator("#explorer_map");
+  await expect(explorerMap).toHaveCount(1);
+
+  // Wait for the Leaflet map to have country markers
+  const countryMarkers = explorerMap.locator(
+    ".leaflet-marker-icon[title*='/']",
+  );
+  await expect(countryMarkers.first()).toBeVisible({ timeout: 10000 });
+
+  // Assert that at least one pie chart canvas is present alongside the markers.
+  const pieCharts = explorerMap.locator("canvas.leaflet-piechart-icon");
+  await expect(pieCharts.first()).toBeVisible({ timeout: 10000 });
+  expect(await pieCharts.count()).toBeGreaterThan(0);
+});
+
 const badgesThatShouldExistMap = {
   // Running badges
   "runner-tourist": ["1309364", "482"],
