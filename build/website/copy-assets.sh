@@ -41,7 +41,6 @@ cp -r js/lib/third-party/leaflet-markercluster website/assets/js/lib/third-party
 cp -r js/lib/third-party/leaflet-piechart website/assets/js/lib/third-party/
 
 echo "Copying third party CSS libraries into the assets directory"
-# Copy the required third party libraries from the top level shared project dir
 mkdir -p website/assets/css/third-party/
 mkdir -p website/assets/css/third-party/leaflet
 cp "$L_NM/leaflet.css" website/assets/css/third-party/leaflet/
