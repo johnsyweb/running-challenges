@@ -156,6 +156,20 @@ jobs:
           path: browser-extensions/extension/src/js/tests/ui-test/playwright-report/
           retention-days: 30
 
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ui-tests-screenshots-${{ matrix.country_hostname }}
+          path: browser-extensions/extension/src/js/tests/ui-test/test-results/
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: ui-tests-html-${{ matrix.country_hostname }}
+          path: browser-extensions/extension/src/js/tests/ui-test/playwright-debug/
+          retention-days: 7
+
   # This stage will run once the extensions have been built, and should only run if they were successful.
   # Assuming they are successful, we will push them somewhere they can be used.
 

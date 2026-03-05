@@ -3,14 +3,42 @@ const { test: base, expect, chromium } = require("@playwright/test");
 const path = require("path");
 const fs = require("fs");
 
+const PLAYWRIGHT_DEBUG_DIR = path.join(__dirname, "..", "playwright-debug");
+
+function safeDebugFilename(title) {
+  return title.replace(/[^a-zA-Z0-9-]/g, "_").slice(0, 80);
+}
+
+async function saveDebugArtifactsOnFailure(page, testInfo) {
+  if (testInfo.status !== "failed") return;
+  try {
+    fs.mkdirSync(PLAYWRIGHT_DEBUG_DIR, { recursive: true });
+    const baseName = safeDebugFilename(testInfo.title);
+    const htmlPath = path.join(PLAYWRIGHT_DEBUG_DIR, `${baseName}.html`);
+    const html = await page.content();
+    fs.writeFileSync(htmlPath, html, "utf8");
+  } catch (_) {
+    // Ignore (e.g. page closed or no page)
+  }
+}
+
 const countryDomain = process.env.COUNTRY_HOSTNAME
   ? process.env.COUNTRY_HOSTNAME
   : "parkrun.org.uk";
 
 const extensionPath = path.join(
   __dirname,
-  "../extension-binaries/chrome-extension-package/",
+  "../extension-binaries/chrome-extension-package",
 );
+
+if (
+  !fs.existsSync(extensionPath) ||
+  !fs.existsSync(path.join(extensionPath, "manifest.json"))
+) {
+  throw new Error(
+    `Chrome extension not found at ${extensionPath}. Build the extension and unzip the Chrome zip into extension-binaries/chrome-extension-package/. Run from repo root: pnpm --filter running-challenges-extension run build:extension, then unzip browser-extensions/chrome/build/web-ext-artifacts/running_challenges-chrome-*.zip into that directory.`,
+  );
+}
 
 function getFixturePath(hostname, athleteId, suffix) {
   return path.join(
@@ -144,6 +172,10 @@ const test = base.extend({
     await use(context);
     await context.close();
   },
+});
+
+test.afterEach(async ({ page }, testInfo) => {
+  await saveDebugArtifactsOnFailure(page, testInfo);
 });
 
 test("Basic extension load test", async ({ page }) => {
