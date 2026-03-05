@@ -32,9 +32,10 @@ mkdir -p website/img/screenshots
 cp -r images/screenshots/*.png website/img/screenshots/
 
 echo "Copying third party Javascript libraries into the assets directory"
-# Copy the required third party libraries from the top level shared project dir
 mkdir -p website/assets/js/lib/third-party/
-cp -r js/lib/third-party/jquery website/assets/js/lib/third-party/
+JQ_NM="browser-extensions/extension/node_modules/jquery/dist"
+mkdir -p website/assets/js/lib/third-party/jquery
+cp "$JQ_NM/jquery.min.js" website/assets/js/lib/third-party/jquery/jquery-3.6.0.js
 cp -r js/lib/third-party/d3-voronoi website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-canvasicon website/assets/js/lib/third-party/

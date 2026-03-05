@@ -4,7 +4,7 @@ The following third-party libraries have been used in this extension (this
 information exists in under each [third-party library folder](https://github.com/fraz3alpha/running-challenges/tree/master/js/lib/third-party),
 but is summarised here for ease of use):
 
-- jquery v3.3.1 - https://github.com/jquery/jquery/archive/3.3.1.zip
+- jquery v3.6.0 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/jquery/dist` (no vendored copy).
 - leaflet v1.3.1 - https://github.com/Leaflet/Leaflet/archive/v1.3.1.zip
 - d3-voronoi v1.1.2 - https://github.com/d3/d3-voronoi/releases/download/v1.1.2/d3-voronoi.zip
 
