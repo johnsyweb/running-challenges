@@ -539,6 +539,14 @@ function deriveHomeParkrunInfoFromResults(data) {
     if (count > mostFrequentCount) {
       mostFrequentCount = count;
       mostFrequentEventName = eventName;
+    } else if (count === mostFrequentCount) {
+      // Tie-breaker: pick the event most recently visited.
+      const names = data.parkrun_results.map((r) => r.name);
+      const lastIndexCurrent = names.lastIndexOf(mostFrequentEventName);
+      const lastIndexCandidate = names.lastIndexOf(eventName);
+      if (lastIndexCandidate > lastIndexCurrent) {
+        mostFrequentEventName = eventName;
+      }
     }
   });
 
