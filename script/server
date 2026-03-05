@@ -22,7 +22,7 @@ echo "Starting Chrome with web-ext (via pnpm exec)..."
     -v \
     -u "${REQUESTED_URL}" \
     --target=chromium \
-    --source-dir browser-extensions/chrome/build
+    --source-dir "${ROOT_DIR}/browser-extensions/chrome/build"
 ) &
 
 echo "Starting Firefox with web-ext (via pnpm exec)..."
@@ -30,5 +30,5 @@ cd "$ROOT_DIR"
 exec pnpm --filter running-challenges-extension exec web-ext run \
   -v \
   -u "${REQUESTED_URL}" \
-  --source-dir browser-extensions/firefox/build
+  --source-dir "${ROOT_DIR}/browser-extensions/firefox/build"
 
