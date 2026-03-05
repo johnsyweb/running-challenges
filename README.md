@@ -195,7 +195,7 @@ This repository uses [Dependabot](https://docs.github.com/en/code-security/depen
 ## Automated Updates
 
 - **GitHub Actions**: All workflow actions are automatically updated weekly
-- **pnpm Dependencies**: Extension and unit-test workspace packages are updated weekly (root lockfile)
+- **pnpm (JavaScript)**: Extension and unit-test workspace packages are updated weekly (root `pnpm-lock.yaml`). Check the [Dependencies tab](https://github.com/fraz3alpha/running-challenges/network/dependencies) or look for PRs labelled `dependencies` and `pnpm`.
 - **Ruby/Bundler**: Jekyll and other Ruby gems are updated weekly
 - **Schedule**: Every Monday at 9:00 AM UTC
 
