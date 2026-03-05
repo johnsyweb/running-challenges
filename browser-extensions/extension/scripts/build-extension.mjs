@@ -185,11 +185,15 @@ function buildBrowser(browser) {
     .replace(/REPLACE_EXTENSION_BUILD_ID/g, EXTENSION_BUILD_ID);
   fs.writeFileSync(path.join(buildDir, "manifest.json"), manifestStr + "\n");
 
-  const patchFiles = fs
-    .readdirSync(patchesDir)
-    .filter((f) => f.endsWith(".patch"));
-  for (const f of patchFiles) {
-    run(`patch -p0 --directory "${buildDir}" < "${path.join(patchesDir, f)}"`);
+  if (fs.existsSync(patchesDir)) {
+    const patchFiles = fs
+      .readdirSync(patchesDir)
+      .filter((f) => f.endsWith(".patch"));
+    for (const f of patchFiles) {
+      run(
+        `patch -p0 --directory "${buildDir}" < "${path.join(patchesDir, f)}"`,
+      );
+    }
   }
 
   run(`web-ext build`, { cwd: buildDir });
