@@ -157,6 +157,8 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
 
+      # Full suite includes "Leaflet markers load with icons", which guards against
+      # regressions when moving Leaflet (or other third-party assets) to pnpm.
       - name: Run Playwright tests
         run: xvfb-run npx playwright test
         env:
@@ -169,9 +171,7 @@ jobs:
         if: always()
         with:
           name: ui-tests-chrome-${{ matrix.country_hostname }}
-          path: |
-            browser-extensions/extension/src/js/tests/ui-test/playwright-report/
-            browser-extensions/extension/src/js/tests/ui-test/screenshot.png
+          path: browser-extensions/extension/src/js/tests/ui-test/playwright-report/
           retention-days: 30
 
   # This stage will run once the extensions have been built, and should only run if they were successful.
