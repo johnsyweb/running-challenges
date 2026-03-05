@@ -30,15 +30,14 @@ We might wish to publish our code coverage metrics like this: https://maximilian
 
 Currently they will just be printed to the GitHub Actions logs.
 
-Run the tests in the `js` directory with:
+Run the tests in the `js` directory with (from the repository root):
 
 ```
-npm test
+pnpm --filter running-challenges-tests run test
 ```
 
 Or, if you want the coverage report:
 
 ```
-npm run test-with-coverage
-``
+pnpm --filter running-challenges-tests run test-with-coverage
 ```

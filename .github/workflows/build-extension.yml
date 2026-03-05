@@ -132,17 +132,19 @@ jobs:
           cd extension-binaries/chrome-extension-package
           unzip *.zip
 
-      - name: Install Node dependencies
-        run: npm ci
+      - name: Install pnpm dependencies
+        working-directory: ${{ github.workspace }}
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Browsers
-        run: |
-          npx playwright install --with-deps chromium
+        working-directory: ${{ github.workspace }}
+        run: pnpm --filter running-challenges-chrome-ui-testing exec playwright install --with-deps chromium
 
       # Full suite includes "Leaflet markers load with icons", which guards against
       # regressions when moving Leaflet (or other third-party assets) to pnpm.
       - name: Run Playwright tests
-        run: xvfb-run npx playwright test
+        working-directory: ${{ github.workspace }}
+        run: xvfb-run pnpm --filter running-challenges-chrome-ui-testing run test
         env:
           COUNTRY_HOSTNAME: "${{ matrix.country_hostname }}"
 

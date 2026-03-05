@@ -28,8 +28,8 @@ updates:
       - "github-actions"
       - "automated"
 
-  # Enable version updates for pnpm workspace (extension + running-challenges-tests)
-  - package-ecosystem: "pnpm"
+  # Enable version updates for pnpm workspace (extension, tests, ui-test)
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -49,29 +49,6 @@ updates:
     labels:
       - "dependencies"
       - "pnpm"
-      - "automated"
-
-  # Enable version updates for npm dependencies in ui-test (separate package.json)
-  - package-ecosystem: "npm"
-    directory: "/browser-extensions/extension/src/js/tests/ui-test"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "UTC"
-    open-pull-requests-limit: 5
-    groups:
-      npm-dependencies:
-        patterns:
-          - "*"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    reviewers:
-      - "fraz3alpha"
-    labels:
-      - "dependencies"
-      - "npm"
       - "automated"
 
   # Enable version updates for Ruby/Bundler dependencies

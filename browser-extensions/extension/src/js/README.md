@@ -4,12 +4,11 @@
 
 This project uses [Mocha] for unit testing.
 
-To run the unit tests locally:
+To run the unit tests locally (from the repository root):
 
 ```sh
-cd browser-extensions/extension/src/js/tests
-npm install
-npm run test-with-coverage
+pnpm install
+pnpm --filter running-challenges-tests run test-with-coverage
 ```
 
 ## Automated browser testing
@@ -48,6 +47,7 @@ $Env:SELENIUM_PORT="4445"
 ```
 
 <!-- Links for this document -->
+
 [Extension Builder]: https://github.com/fraz3alpha/running-challenges/actions/workflows/build-extension.yml
 [GitHub Actions]: https://github.com/actions
 [Mocha]: https://mochajs.org

@@ -22,10 +22,6 @@ if [[ -d "browser-extensions/extension/src/js/tests/ui-test" ]]; then
     mkdir -p "$EXT_UNPACKED"
     unzip -o browser-extensions/chrome/build/web-ext-artifacts/running_challenges-chrome-*.zip -d "$EXT_UNPACKED"
   fi
-  (
-    cd "$UI_TEST_DIR"
-    npm install
-    npx playwright test
-  )
+  pnpm --filter running-challenges-chrome-ui-testing run test
 fi
 

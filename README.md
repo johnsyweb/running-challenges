@@ -97,8 +97,8 @@ extension when a build occurs.
 Mozilla provide a small tool - [`web-ext` tool](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Getting_started_with_web-ext),
 to package and lint check Firefox browser extensions,
 which is used for packaging both the Chrome and Firefox extensions. The lint
-checking is of limited use for Chrome, but is still run for reference. It can be
-installed with `npm install --global web-ext`.
+checking is of limited use for Chrome, but is still run for reference. Install it
+with `pnpm add -g web-ext` (or use the toolchain from `mise.toml` via `./script/bootstrap`).
 
 ### Building the extensions
 
@@ -116,7 +116,7 @@ source build/version.sh && export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
 pnpm --filter running-challenges-extension run build:extension
 ```
 
-Third-party libraries (jQuery, Leaflet, and plugins) are installed as npm
+Third-party libraries (jQuery, Leaflet, and plugins) are installed as pnpm
 dependencies and copied into the build; the build script uses the extension
 package’s `node_modules`. This produces unpacked and packaged builds in
 `browser-extensions/chrome/build` and `browser-extensions/firefox/build`
@@ -155,7 +155,7 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
 
 To ensure consistent tool versions between local development and CI, this repository uses [`mise`](https://mise.jdx.dev/):
 
-- Tool versions are defined in `mise.toml` (for example, Node.js 20, pnpm 9, and Ruby 3.1).
+- Tool versions are defined in `mise.toml` (for example, Node.js 20, pnpm 10, and Ruby 3.1).
 - On a local machine:
   - Install [mise](https://mise.jdx.dev/) if you do not have it, then from the repository root run `./script/bootstrap`. Bootstrap runs `mise install` to install the toolchain (Node.js, pnpm, Ruby) from `mise.toml`, then `pnpm install` for extension build dependencies (such as `web-ext`).
 - In GitHub Actions, the [`jdx/mise-action`](https://github.com/jdx/mise-action) workflow step reads `mise.toml` and installs the same tool versions; extension jobs then run `pnpm install --frozen-lockfile`.
@@ -195,7 +195,7 @@ This repository uses [Dependabot](https://docs.github.com/en/code-security/depen
 ## Automated Updates
 
 - **GitHub Actions**: All workflow actions are automatically updated weekly
-- **pnpm (JavaScript)**: Extension and unit-test workspace packages are updated weekly (root `pnpm-lock.yaml`). Check the [Dependencies tab](https://github.com/fraz3alpha/running-challenges/network/dependencies) or look for PRs labelled `dependencies` and `pnpm`.
+- **pnpm (JavaScript)**: Extension, unit-test, and Playwright UI-test workspace packages are updated weekly (root `pnpm-lock.yaml`). Check the [Dependencies tab](https://github.com/fraz3alpha/running-challenges/network/dependencies) or look for PRs labelled `dependencies` and `pnpm`.
 - **Ruby/Bundler**: Jekyll and other Ruby gems are updated weekly
 - **Schedule**: Every Monday at 9:00 AM UTC
 
