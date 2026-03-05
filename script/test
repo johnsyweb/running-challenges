@@ -16,12 +16,11 @@ if [[ -d "browser-extensions/extension/src/js/tests/ui-test" ]]; then
   echo "Running Playwright UI tests..."
   UI_TEST_DIR="browser-extensions/extension/src/js/tests/ui-test"
   EXT_UNPACKED="$UI_TEST_DIR/extension-binaries/chrome-extension-package"
-  if [[ ! -f "$EXT_UNPACKED/manifest.json" ]]; then
-    echo "Chrome extension not unpacked; building and unpacking..."
-    pnpm --filter running-challenges-extension run build:extension
-    mkdir -p "$EXT_UNPACKED"
-    unzip -o browser-extensions/chrome/build/web-ext-artifacts/running_challenges-chrome-*.zip -d "$EXT_UNPACKED"
-  fi
+  echo "Building and unpacking Chrome extension for UI tests..."
+  pnpm --filter running-challenges-extension run build:extension
+  rm -rf "$EXT_UNPACKED"
+  mkdir -p "$EXT_UNPACKED"
+  unzip -o browser-extensions/chrome/build/web-ext-artifacts/running_challenges-chrome-*.zip -d "$EXT_UNPACKED"
   pnpm --filter running-challenges-chrome-ui-testing run test
 fi
 

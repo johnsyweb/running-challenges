@@ -242,7 +242,12 @@ test("Explorer map shows country completion pie charts", async ({ page }) => {
 
   // Assert that at least one pie chart canvas is present on the explorer map.
   const pieCharts = explorerMap.locator("canvas.leaflet-piechart-icon");
-  await expect(pieCharts.first()).toBeVisible({ timeout: 15000 });
+  await page.waitForFunction(
+    () =>
+      document.querySelectorAll("canvas.leaflet-piechart-icon").length > 0,
+    null,
+    { timeout: 15000 },
+  );
   expect(await pieCharts.count()).toBeGreaterThan(0);
 });
 

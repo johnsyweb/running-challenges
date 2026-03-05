@@ -15,7 +15,7 @@ The LeafletJS library is extensible. The following are from pnpm (`browser-exten
 - leaflet.markercluster v1.3.0 (JS + CSS)
 
 - leaflet-canvasicon v0.1.6 — from pnpm; extension and website build copy from `node_modules/leaflet-canvasicon`.
-- leaflet-piechart v0.1.2 — from pnpm (GitHub: sashakavun/leaflet-piechart#0.1.2); extension and website build copy from `node_modules/leaflet-piechart`.
+- leaflet-piechart v0.1.3 — from pnpm (GitHub: sashakavun/leaflet-piechart#29fcbb6be4c5e303cf3d0b94ea95997549afffa9); extension and website build copy from `node_modules/leaflet-piechart`.
 
 Third-party CSS (Leaflet, leaflet-extramarkers, etc.) is copied from pnpm in the
 extension build; extension URL rewriting for assets is done in the build script.
