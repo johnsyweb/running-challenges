@@ -1,6 +1,5 @@
 export USER_AGENT='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
 export TARGET_ROOT_DIR="`pwd`/supporting-data/sites"
-export NGINX_CONF_D_ROOT_DIR="`pwd`/supporting-data/nginx/conf.d"
 
 # This script will start getting 405 errors when running curl if we get the AWS "Are you human" check,
 # so we'll keep track of how far we've got
@@ -46,28 +45,7 @@ do
 
     done
 
-    # Write out the Nginx configuration file for this server
-    CONF_FILE="${NGINX_CONF_D_ROOT_DIR}/${PARKRUN_HOSTNAME}.conf"
-    echo "Writing out Nginx conf file to ${CONF_FILE}"
-
-    cat > "${CONF_FILE}" << EOL
-server {
-    listen  443 ssl;
-    server_name www.${PARKRUN_HOSTNAME};
-
-    ssl_certificate     /etc/nginx/cert/cert.pem;
-    ssl_certificate_key /etc/nginx/cert/key.pem;
-
-    location / {
-        root /usr/share/nginx/html/${PARKRUN_HOSTNAME}/contents;
-        add_header X-Running-Challenges mock-server;
-        index index.html;
-    }
-}
-
-EOL
-
-# Do a bit of an extra sleep between countries
-sleep 10
+    # Do a bit of an extra sleep between countries
+    sleep 10
 
 done

@@ -126,24 +126,6 @@ jobs:
           sudo apt-get update && \
           sudo apt-get install -y xvfb unzip
 
-      - name: Start up the supporting nginx services
-        run: |
-
-          echo "Creating a certificate"
-          cd ./supporting-data/nginx/cert/
-          bash generate.sh
-          cd -
-
-          echo "Starting up docker compose services"
-          docker compose -f "./supporting-data/docker-compose-gh-actions.yml" up --force-recreate -d
-
-          # Give nginx a moment to have fully come up
-          sleep 1
-
-          # Make the changes to /etc/hosts so that the tests reference the above containers.
-          echo "Append to /etc/hosts to use this nginx"
-          sudo bash -c 'cat ./supporting-data/etc-hosts.txt >> /etc/hosts'
-
       - name: Unpack extension
         run: |
           ls -lR extension-binaries
