@@ -508,15 +508,94 @@ function add_flags(div_id, data) {
   set_progress_message("Added flags");
 }
 
+function deriveHomeParkrunInfoFromResults(data) {
+  if (
+    !data.parkrun_results ||
+    data.parkrun_results.length === 0 ||
+    !data.geo_data ||
+    !data.geo_data.data ||
+    !data.geo_data.data.events
+  ) {
+    return undefined;
+  }
+
+  const eventCounts = {};
+  data.parkrun_results.forEach((result) => {
+    const eventName = result.name;
+    if (!eventName) {
+      return;
+    }
+
+    if (eventCounts[eventName] === undefined) {
+      eventCounts[eventName] = 0;
+    }
+    eventCounts[eventName] += 1;
+  });
+
+  let mostFrequentEventName;
+  let mostFrequentCount = 0;
+  Object.keys(eventCounts).forEach((eventName) => {
+    const count = eventCounts[eventName];
+    if (count > mostFrequentCount) {
+      mostFrequentCount = count;
+      mostFrequentEventName = eventName;
+    }
+  });
+
+  if (!mostFrequentEventName) {
+    return undefined;
+  }
+
+  const eventInfo = data.geo_data.data.events[mostFrequentEventName];
+  if (!eventInfo) {
+    return undefined;
+  }
+
+  return {
+    ...eventInfo,
+    name: mostFrequentEventName,
+  };
+}
+
 function updateSummaryInfo(data, athleteId) {
-  data.info.has_athlete_id =
-    data.user_data.athlete_number !== undefined &&
-    data.user_data.athlete_number != "";
+  // Derive athlete id if it has not been explicitly set in the options.
+  const storedAthleteNumber = data.user_data.athlete_number;
+  const hasStoredAthleteNumber =
+    storedAthleteNumber !== undefined && storedAthleteNumber !== "";
+
+  const effectiveAthleteNumber = hasStoredAthleteNumber
+    ? storedAthleteNumber
+    : athleteId;
+
+  if (!hasStoredAthleteNumber && athleteId) {
+    data.user_data.athlete_number = athleteId;
+  }
+
+  // Derive home parkrun (most frequently visited event) if it has not been
+  // explicitly set in the options.
+  const hasStoredHomeParkrun =
+    data.user_data.home_parkrun_info !== undefined &&
+    data.user_data.home_parkrun_info.name !== undefined;
+
+  if (!hasStoredHomeParkrun) {
+    const derivedHome = deriveHomeParkrunInfoFromResults(data);
+    if (derivedHome) {
+      data.user_data.home_parkrun_info = derivedHome;
+    }
+  }
+
+  data.info.has_athlete_id = !!effectiveAthleteNumber;
   data.info.has_home_parkrun =
     data.user_data.home_parkrun_info !== undefined &&
     data.user_data.home_parkrun_info.name !== undefined;
+
+  // Treat the page as "our page" when the visible athlete id matches the
+  // effective athlete id (explicit option when set, otherwise the page id).
   data.info.is_our_page =
-    data.info.has_athlete_id && athleteId == data.user_data.athlete_number;
+    !!athleteId && effectiveAthleteNumber !== undefined
+      ? athleteId == effectiveAthleteNumber
+      : false;
+
   // Convenience properties for the main sources of data
   // data.info.has_geo_data = (data.geo_data !== undefined)
   data.info.has_parkrun_results = data.parkrun_results !== undefined;

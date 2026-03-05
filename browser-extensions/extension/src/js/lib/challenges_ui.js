@@ -1522,25 +1522,6 @@ function add_stats_table(div, data) {
     div.append(table);
   }
 
-  // Append a message noting that some information may be missing
-  // if there is no athlete_id or home parkrun set
-  if (
-    data.info.has_athlete_id == false ||
-    data.info.has_home_parkrun == false
-  ) {
-    var options_message_container = $("<div/>");
-    options_link = $("<a/>")
-      .attr("href", browserAPI.runtime.getURL("/html/options.html"))
-      .attr("target", "_blank")
-      .attr("rel", "noopener noreferrer")
-      .text("options.");
-    options_message_container.append(
-      "N.B. More stats and map features are available if you set your home parkrun and athlete id in the ",
-    );
-    options_message_container.append(options_link);
-    div.append($("<br/>"));
-    div.append(options_message_container);
-  }
   div.append("<br/>Hover over the stats for a more detailed description");
 }
 
