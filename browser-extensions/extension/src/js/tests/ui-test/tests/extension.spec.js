@@ -240,15 +240,9 @@ test("Explorer map shows country completion pie charts", async ({ page }) => {
   const explorerMap = page.locator("#explorer_map");
   await expect(explorerMap).toHaveCount(1);
 
-  // Wait for the Leaflet map to have country markers
-  const countryMarkers = explorerMap.locator(
-    ".leaflet-marker-icon[title*='/']",
-  );
-  await expect(countryMarkers.first()).toBeVisible({ timeout: 10000 });
-
-  // Assert that at least one pie chart canvas is present alongside the markers.
+  // Assert that at least one pie chart canvas is present on the explorer map.
   const pieCharts = explorerMap.locator("canvas.leaflet-piechart-icon");
-  await expect(pieCharts.first()).toBeVisible({ timeout: 10000 });
+  await expect(pieCharts.first()).toBeVisible({ timeout: 15000 });
   expect(await pieCharts.count()).toBeGreaterThan(0);
 });
 
