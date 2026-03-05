@@ -68,7 +68,7 @@ function buildBrowser(browser) {
   run(`cp -r images/logo "${buildDir}/images/"`);
 
   run(
-    `mkdir -p "${buildDir}/js/lib/third-party/jquery" "${buildDir}/js/lib/third-party/leaflet" "${buildDir}/js/lib/third-party/leaflet-fullscreen" "${buildDir}/js/lib/third-party/leaflet-markercluster" "${buildDir}/js/lib/third-party/leaflet-extramarkers" "${buildDir}/js/lib/third-party/d3-voronoi"`,
+    `mkdir -p "${buildDir}/js/lib/third-party/jquery" "${buildDir}/js/lib/third-party/leaflet" "${buildDir}/js/lib/third-party/leaflet-fullscreen" "${buildDir}/js/lib/third-party/leaflet-markercluster" "${buildDir}/js/lib/third-party/leaflet-extramarkers" "${buildDir}/js/lib/third-party/leaflet-canvasicon" "${buildDir}/js/lib/third-party/d3-voronoi"`,
   );
   run(
     `cp "${nm}/jquery/dist/jquery.js" "${buildDir}/js/lib/third-party/jquery/jquery-3.6.0.js"`,
@@ -89,7 +89,10 @@ function buildBrowser(browser) {
     `cp "${nm}/d3-voronoi/dist/d3-voronoi.js" "${buildDir}/js/lib/third-party/d3-voronoi/d3-voronoi.js"`,
   );
   run(
-    `cp -r js/lib/third-party/leaflet-canvasicon js/lib/third-party/leaflet-piechart "${buildDir}/js/lib/third-party/"`,
+    `cp "${nm}/leaflet-canvasicon/leaflet-canvasicon.js" "${buildDir}/js/lib/third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.6.js"`,
+  );
+  run(
+    `cp -r js/lib/third-party/leaflet-piechart "${buildDir}/js/lib/third-party/"`,
   );
 
   run(

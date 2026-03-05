@@ -19,6 +19,9 @@ importers:
       leaflet:
         specifier: 1.3.1
         version: 1.3.1
+      leaflet-canvasicon:
+        specifier: 0.1.6
+        version: 0.1.6
       leaflet-extra-markers:
         specifier: 1.0.6
         version: 1.0.6
@@ -1421,6 +1424,9 @@ packages:
   latest-version@9.0.0:
     resolution: {integrity: sha512-7W0vV3rqv5tokqkBAFV1LbR7HPOWzXQDpDgEuib/aJ1jsZZx6x3c2mBI+TJhJzOhkGeaLbCKEHXEXLfirtG2JA==}
     engines: {node: '>=18'}
+
+  leaflet-canvasicon@0.1.6:
+    resolution: {integrity: sha512-a9/5eZXZxspUX3sUqYGBbWqHxsLgFINSMdyqOqMxLsjVOzltUCrED3GuXaclUg+z7H34XeHcrSjMz4+R4MNqtg==}
 
   leaflet-extra-markers@1.0.6:
     resolution: {integrity: sha512-pksPfTFLKWCHnvZt8iKhKxlPnCTCpkoT+ZBZ7Si8GYiE6B2hAWHjd4Pxc7pm8jjkPJS73tjPcal09VChP8EAiw==}
@@ -3777,6 +3783,8 @@ snapshots:
   latest-version@9.0.0:
     dependencies:
       package-json: 10.0.1
+
+  leaflet-canvasicon@0.1.6: {}
 
   leaflet-extra-markers@1.0.6: {}
 
