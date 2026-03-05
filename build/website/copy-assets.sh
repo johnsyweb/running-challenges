@@ -46,7 +46,9 @@ cp "$LM_NM/leaflet.markercluster.js" website/assets/js/lib/third-party/leaflet-m
 LCI_NM="browser-extensions/extension/node_modules/leaflet-canvasicon"
 mkdir -p website/assets/js/lib/third-party/leaflet-canvasicon
 cp "$LCI_NM/leaflet-canvasicon.js" website/assets/js/lib/third-party/leaflet-canvasicon/leaflet-canvasicon-0.1.6.js
-cp -r js/lib/third-party/leaflet-piechart website/assets/js/lib/third-party/
+LPC_NM="browser-extensions/extension/node_modules/leaflet-piechart"
+mkdir -p website/assets/js/lib/third-party/leaflet-piechart
+cp "$LPC_NM/leaflet-piechart.js" website/assets/js/lib/third-party/leaflet-piechart/leaflet-piechart-0.1.2.js
 
 echo "Copying third party CSS libraries into the assets directory"
 mkdir -p website/assets/css/third-party/

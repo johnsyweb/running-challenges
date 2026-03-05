@@ -25,6 +25,9 @@ importers:
       leaflet-extra-markers:
         specifier: 1.0.6
         version: 1.0.6
+      leaflet-piechart:
+        specifier: github:sashakavun/leaflet-piechart#0.1.2
+        version: git+https://git@github.com:sashakavun/leaflet-piechart.git#d278bf7838d7feaf1e73e885470e099542617c21
       leaflet.fullscreen:
         specifier: 1.1.0
         version: 1.1.0
@@ -1430,6 +1433,10 @@ packages:
 
   leaflet-extra-markers@1.0.6:
     resolution: {integrity: sha512-pksPfTFLKWCHnvZt8iKhKxlPnCTCpkoT+ZBZ7Si8GYiE6B2hAWHjd4Pxc7pm8jjkPJS73tjPcal09VChP8EAiw==}
+
+  leaflet-piechart@git+https://git@github.com:sashakavun/leaflet-piechart.git#d278bf7838d7feaf1e73e885470e099542617c21:
+    resolution: {commit: d278bf7838d7feaf1e73e885470e099542617c21, repo: git@github.com:sashakavun/leaflet-piechart.git, type: git}
+    version: 0.1.2
 
   leaflet.fullscreen@1.1.0:
     resolution: {integrity: sha512-v6eV8N24YZPufGTwm+IXYc9Qxw8Z3DoxR7KK5bJWVeUR/Jq8p6eG5vZp7UvlD2vMmiUBacz8+62+ftMTklBFIw==}
@@ -3787,6 +3794,8 @@ snapshots:
   leaflet-canvasicon@0.1.6: {}
 
   leaflet-extra-markers@1.0.6: {}
+
+  leaflet-piechart@git+https://git@github.com:sashakavun/leaflet-piechart.git#d278bf7838d7feaf1e73e885470e099542617c21: {}
 
   leaflet.fullscreen@1.1.0: {}
 

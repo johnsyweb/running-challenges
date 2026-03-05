@@ -45,9 +45,9 @@ The only remaining “third-party CSS” to finish was **leaflet-extramarkers**;
 ## Risks / notes
 
 - **Image path mismatch**: If the npm package uses `img/` instead of `images/`, copy or symlink into `images/` in the build so the rewritten CSS still matches.
-- **No other vendored CSS**: After this, the only remaining vendored asset in the plan is **leaflet-piechart** (JS only; no npm equivalents called out). No further “third-party CSS” to migrate for the current plan.
+- **No other vendored CSS**: After this, there are no remaining vendored third-party assets in the plan; leaflet-piechart is sourced from GitHub via pnpm. No further “third-party CSS” to migrate for the current plan.
 
 ## Out of scope (unchanged)
 
-- leaflet-canvasicon is now from npm; leaflet-piechart remains vendored (JS only).
+- leaflet-canvasicon and leaflet-piechart are from npm / GitHub (pnpm); no vendored JS remains.
 - No new bundler or build tool; we only change where leaflet-extramarkers CSS/images come from and how extension URLs are applied.
