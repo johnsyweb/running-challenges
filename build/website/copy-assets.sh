@@ -34,10 +34,16 @@ cp "$L_NM/leaflet.js" website/assets/js/lib/third-party/leaflet/leaflet-1.3.1.js
 D3_NM="browser-extensions/extension/node_modules/d3-voronoi/dist"
 mkdir -p website/assets/js/lib/third-party/d3-voronoi
 cp "$D3_NM/d3-voronoi.js" website/assets/js/lib/third-party/d3-voronoi/d3-voronoi.js
+LEM_DIST="browser-extensions/extension/node_modules/leaflet-extra-markers/dist"
+mkdir -p website/assets/js/lib/third-party/leaflet-extramarkers
+cp "$LEM_DIST/js/leaflet.extra-markers.min.js" website/assets/js/lib/third-party/leaflet-extramarkers/leaflet-extramarkers-1.0.6.js
+LFS_NM="browser-extensions/extension/node_modules/leaflet.fullscreen"
+mkdir -p website/assets/js/lib/third-party/leaflet-fullscreen
+cp "$LFS_NM/Control.FullScreen.js" website/assets/js/lib/third-party/leaflet-fullscreen/leaflet-fullscreen-1.1.0.js
+LM_NM="browser-extensions/extension/node_modules/leaflet.markercluster/dist"
+mkdir -p website/assets/js/lib/third-party/leaflet-markercluster
+cp "$LM_NM/leaflet.markercluster.js" website/assets/js/lib/third-party/leaflet-markercluster/leaflet-markercluster-1.3.0.js
 cp -r js/lib/third-party/leaflet-canvasicon website/assets/js/lib/third-party/
-cp -r js/lib/third-party/leaflet-extramarkers website/assets/js/lib/third-party/
-cp -r js/lib/third-party/leaflet-fullscreen website/assets/js/lib/third-party/
-cp -r js/lib/third-party/leaflet-markercluster website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-piechart website/assets/js/lib/third-party/
 
 echo "Copying third party CSS libraries into the assets directory"
@@ -45,10 +51,12 @@ mkdir -p website/assets/css/third-party/
 mkdir -p website/assets/css/third-party/leaflet
 cp "$L_NM/leaflet.css" website/assets/css/third-party/leaflet/
 cp -r "$L_NM/images" website/assets/css/third-party/leaflet/
-LEM_DIST="browser-extensions/extension/node_modules/leaflet-extra-markers/dist"
 mkdir -p website/assets/css/third-party/leaflet-extramarkers/images
 cp "$LEM_DIST/css/leaflet.extra-markers.min.css" website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css
 sed 's|url("../img/|url("images/|g' website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css > website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css.tmp && mv website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css.tmp website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css
 cp "$LEM_DIST/img/"*.png website/assets/css/third-party/leaflet-extramarkers/images/
-cp -r css/third-party/leaflet-fullscreen website/assets/css/third-party/
-cp -r css/third-party/leaflet-markercluster website/assets/css/third-party/
+mkdir -p website/assets/css/third-party/leaflet-fullscreen
+cp "$LFS_NM/Control.FullScreen.css" website/assets/css/third-party/leaflet-fullscreen/leaflet-fullscreen.css
+cp "$LFS_NM/icon-fullscreen.png" "$LFS_NM/icon-fullscreen-2x.png" website/assets/css/third-party/leaflet-fullscreen/
+mkdir -p website/assets/css/third-party/leaflet-markercluster
+cp "$LM_NM/MarkerCluster.css" "$LM_NM/MarkerCluster.Default.css" website/assets/css/third-party/leaflet-markercluster/

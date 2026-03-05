@@ -8,12 +8,15 @@ but is summarised here for ease of use):
 - leaflet v1.3.1 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/leaflet/dist` (JS, CSS, images; no vendored copy).
 - d3-voronoi v1.1.4 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/d3-voronoi/dist` (no vendored copy).
 
-The LeafletJS library is extensible, and the following additional libraries have been used:
+The LeafletJS library is extensible. The following are from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules` (no vendored copy):
+
+- leaflet-extra-markers v1.0.6 (JS + CSS/images; CSS URL rewrite in extension build)
+- leaflet.fullscreen v1.1.0 (JS + CSS + icons)
+- leaflet.markercluster v1.3.0 (JS + CSS)
+
+Still vendored (no npm package in use):
 
 - canvasicon v0.1.4 - https://github.com/sashakavun/leaflet-canvasicon/archive/0.1.4.zip
-- extramarkers v1.0.5 - https://github.com/coryasilva/Leaflet.ExtraMarkers/archive/v1.0.5.zip
-- fullscreen v1.0.1 - https://github.com/Leaflet/Leaflet.fullscreen/archive/v1.0.2.zip
-- markercluster v1.3.0 - https://github.com/Leaflet/Leaflet.markercluster/archive/v1.3.0.zip
 - piechart v0.1.2 - https://github.com/Leaflet/Leaflet.markercluster/archive/v1.3.0.zip
 
 Third-party CSS (Leaflet, leaflet-extramarkers, etc.) is copied from npm in the
