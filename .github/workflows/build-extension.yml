@@ -157,6 +157,8 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
 
+      # Full suite includes "Leaflet markers load with icons", which guards against
+      # regressions when moving Leaflet (or other third-party assets) to pnpm.
       - name: Run Playwright tests
         run: xvfb-run npx playwright test
         env:
