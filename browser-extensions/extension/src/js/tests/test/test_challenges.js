@@ -401,6 +401,35 @@ describe("challenges.js", function () {
         assert.equal(r.url, "https://www.parkrun.org.uk/bushy");
       });
     });
+    describe("calculateCountryCompletionInfo", function () {
+      const calculateCountryCompletionInfo = challenges.__get__(
+        "calculateCountryCompletionInfo",
+      );
+
+      it("should compute completed and total events per country", function () {
+        const geoData = getGeoData();
+        const parkrunResults = [
+          createParkrunResult({ name: "Bushy Park" }),
+          createParkrunResult({ name: "Winchester" }),
+          createParkrunResult({ name: "Bushy Park" }),
+        ];
+        const data = {
+          parkrun_results: parkrunResults,
+          geo_data: geoData,
+        };
+
+        const info = calculateCountryCompletionInfo(data);
+        const uk = info["UK"];
+
+        assert.strictEqual(uk.childEventsCount, 3);
+        assert.deepStrictEqual(uk.childEventsCompleted.sort(), [
+          "Bushy Park",
+          "Winchester",
+        ]);
+        assert.strictEqual(uk.childEventsCompletedCount, 2);
+      });
+    });
+
     describe("generate_stat_longest_tourism_streak", () => {
       const generate_stat_longest_tourism_streak = challenges.__get__(
         "generate_stat_longest_tourism_streak",
