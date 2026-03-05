@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-
-# Enable exit on failure
 set -e
+
+# Run from repo root so paths (website/, images/, js/, etc.) resolve
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$ROOT_DIR"
 
 echo "Copying shared resources to the website folder"
 
