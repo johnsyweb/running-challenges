@@ -102,9 +102,44 @@ function buildBrowser(browser) {
   run(
     `cp -r "${nm}/leaflet/dist/images" "${buildDir}/css/third-party/leaflet/"`,
   );
-  run(
-    `cp -r css/third-party/leaflet-extramarkers "${buildDir}/css/third-party/"`,
+  const extramarkersCssDir = path.join(
+    nm,
+    "leaflet-extra-markers",
+    "dist",
+    "css",
   );
+  const extramarkersImgDir = path.join(
+    nm,
+    "leaflet-extra-markers",
+    "dist",
+    "img",
+  );
+  const extramarkersDest = path.join(
+    buildDir,
+    "css",
+    "third-party",
+    "leaflet-extramarkers",
+  );
+  run(`mkdir -p "${extramarkersDest}/images"`);
+  run(
+    `cp "${extramarkersCssDir}/leaflet.extra-markers.min.css" "${extramarkersDest}/leaflet.extra-markers.css"`,
+  );
+  run(`cp ${extramarkersImgDir}/*.png "${extramarkersDest}/images/"`);
+  const extramarkersCssPath = path.join(
+    extramarkersDest,
+    "leaflet.extra-markers.css",
+  );
+  const cssContent = fs.readFileSync(extramarkersCssPath, "utf8");
+  const extensionUrlPrefix =
+    browser === "chrome"
+      ? "chrome-extension://__MSG_@@extension_id__"
+      : "moz-extension://__MSG_@@extension_id__";
+  const basePath = `${extensionUrlPrefix}/css/third-party/leaflet-extramarkers/images`;
+  const rewrittenCss = cssContent.replace(
+    /url\("\.\.\/img\/([^"]+)"\)/g,
+    (_, file) => `url("${basePath}/${file}")`,
+  );
+  fs.writeFileSync(extramarkersCssPath, rewrittenCss);
   run(
     `cp "${nm}/leaflet.fullscreen/Control.FullScreen.css" "${buildDir}/css/third-party/leaflet-fullscreen/Control.FullScreen.css"`,
   );

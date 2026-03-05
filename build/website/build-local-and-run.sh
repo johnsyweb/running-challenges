@@ -47,7 +47,11 @@ echo "Copying third party CSS libraries into the assets directory"
 # Copy the required third party libraries from the top level shared project dir
 mkdir -p website/assets/css/third-party/
 cp -r css/third-party/leaflet website/assets/css/third-party/
-cp -r css/third-party/leaflet-extramarkers website/assets/css/third-party/
+LEM_DIST="browser-extensions/extension/node_modules/leaflet-extra-markers/dist"
+mkdir -p website/assets/css/third-party/leaflet-extramarkers/images
+cp "$LEM_DIST/css/leaflet.extra-markers.min.css" website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css
+sed 's|url("../img/|url("images/|g' website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css > website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css.tmp && mv website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css.tmp website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css
+cp "$LEM_DIST/img/"*.png website/assets/css/third-party/leaflet-extramarkers/images/
 cp -r css/third-party/leaflet-fullscreen website/assets/css/third-party/
 cp -r css/third-party/leaflet-markercluster website/assets/css/third-party/
 
