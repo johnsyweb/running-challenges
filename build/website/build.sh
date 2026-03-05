@@ -34,8 +34,10 @@ mkdir -p website/assets/js/lib/third-party/
 JQ_NM="browser-extensions/extension/node_modules/jquery/dist"
 mkdir -p website/assets/js/lib/third-party/jquery
 cp "$JQ_NM/jquery.min.js" website/assets/js/lib/third-party/jquery/jquery-3.6.0.js
+L_NM="browser-extensions/extension/node_modules/leaflet/dist"
+mkdir -p website/assets/js/lib/third-party/leaflet
+cp "$L_NM/leaflet.js" website/assets/js/lib/third-party/leaflet/leaflet-1.3.1.js
 cp -r js/lib/third-party/d3-voronoi website/assets/js/lib/third-party/
-cp -r js/lib/third-party/leaflet website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-canvasicon website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-extramarkers website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-fullscreen website/assets/js/lib/third-party/
@@ -45,7 +47,9 @@ cp -r js/lib/third-party/leaflet-piechart website/assets/js/lib/third-party/
 echo "Copying third party CSS libraries into the assets directory"
 # Copy the required third party libraries from the top level shared project dir
 mkdir -p website/assets/css/third-party/
-cp -r css/third-party/leaflet website/assets/css/third-party/
+mkdir -p website/assets/css/third-party/leaflet
+cp "$L_NM/leaflet.css" website/assets/css/third-party/leaflet/
+cp -r "$L_NM/images" website/assets/css/third-party/leaflet/
 LEM_DIST="browser-extensions/extension/node_modules/leaflet-extra-markers/dist"
 mkdir -p website/assets/css/third-party/leaflet-extramarkers/images
 cp "$LEM_DIST/css/leaflet.extra-markers.min.css" website/assets/css/third-party/leaflet-extramarkers/leaflet.extra-markers.css
