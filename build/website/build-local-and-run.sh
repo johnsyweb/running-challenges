@@ -14,11 +14,9 @@ SITE_DIR=_site
 # Clear out the build directory
 rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
-docker run --rm --name jekyll \
--p ${JEKYLL_PORT}:4000 \
--v `pwd`:/srv/jekyll \
--v `pwd`/vendor/bundle:/usr/local/bundle \
-jekyll/jekyll jekyll serve --future --trace
+# Install Ruby gems (once) and run the local Jekyll server
+bundle install
+bundle exec jekyll serve --future --trace --port "${JEKYLL_PORT}"
 
 # Print summary
 echo "Built site, total size: `du -sh ${SITE_DIR}`"

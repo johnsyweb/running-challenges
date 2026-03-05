@@ -12,10 +12,9 @@ SITE_DIR=_site
 # Clear out the build directory
 rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
-docker run --rm --name jekyll \
--v `pwd`:/srv/jekyll \
--v `pwd`/vendor/bundle:/usr/local/bundle \
-jekyll/jekyll jekyll build --trace
+# Install Ruby gems (once) and build the site locally
+bundle install
+bundle exec jekyll build --trace
 
 # Print summary
 echo "Built site, total size: `du -sh ${SITE_DIR}`"
