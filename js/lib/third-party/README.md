@@ -16,11 +16,5 @@ The LeafletJS library is extensible, and the following additional libraries have
 - markercluster v1.3.0 - https://github.com/Leaflet/Leaflet.markercluster/archive/v1.3.0.zip
 - piechart v0.1.2 - https://github.com/Leaflet/Leaflet.markercluster/archive/v1.3.0.zip
 
-The following libraries require CSS patches to fix the image paths in order to
-work under the extension/addon packaging system. The patch files can be found
-under the [patches](https://github.com/fraz3alpha/running-challenges/tree/master/patches)
-directory:
-
-- leaflet
-- leaflet / extramarkers
-- leaflet / fullscreen
+Third-party CSS (Leaflet, leaflet-extramarkers, etc.) is copied from npm in the
+extension build; extension URL rewriting for assets is done in the build script.

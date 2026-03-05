@@ -4,7 +4,7 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
 
 ## Why
 
-- **Single source of truth**: Today we have `browser-extensions/common` plus browser-specific `chrome` and `firefox` dirs (manifests, patches). That duplicates structure and makes it easy for behaviour to drift between browsers.
+- **Single source of truth**: Today we have `browser-extensions/common` plus browser-specific `chrome` and `firefox` dirs (manifests). That duplicates structure and makes it easy for behaviour to drift between browsers.
 - **Reproducible tooling**: pnpm gives us lockfiles, a single place for dev/build dependencies, and consistent installs across machines and CI.
 - **Easier evolution**: A unified `src/` tree and a Node-based build make it straightforward to add a bundler later, move third-party libs into proper dependencies, and keep tests importing from the same code paths as the extension.
 
@@ -12,7 +12,7 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
 
 - **pnpm workspace** for the extension (and optionally tests): one `package.json` (e.g. under `browser-extensions/extension/`) owning `web-ext` and other build/test tools, with a lockfile.
 - **Unified extension layout**: One `browser-extensions/extension/src/` tree (background, content-scripts, lib, etc.) instead of `common` plus separate chrome/firefox source dirs. Browser differences live in **data** (manifest variants, small build-time flags), not in duplicated code.
-- **Node build script**: A script (e.g. `scripts/build-extension.mjs`) that copies shared code into a staging dir, applies per-browser manifest overrides, runs patches, and writes `build/chrome` and `build/firefox`. Existing `web-ext build` / `web-ext lint` stay, invoked from this script.
+- **Node build script**: A script (e.g. `scripts/build-extension.mjs`) that copies shared code into a staging dir, applies per-browser manifest overrides, and writes `build/chrome` and `build/firefox`. Existing `web-ext build` / `web-ext lint` stay, invoked from this script.
 - **Scripts wired to pnpm**: `./script/update`, `./script/setup`, and CI call the new pnpm-backed build instead of the current bash-only extension scripts, once the migration is complete.
 - **Incremental third-party handling**: Keep large vendored libs (e.g. Leaflet) as-is at first; move them to npm dependencies and optionally add a small bundler step when convenient.
 
@@ -25,10 +25,10 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
 2. **Restructure into a single `src/` tree** ✅ _Done_
    - Create `browser-extensions/extension/src/` and move/copy current `browser-extensions/common` content into it (e.g. `src/js`, `src/html`, `src/css`).
    - Define manifest fragments or overrides (e.g. `manifest.base.json` + `manifest.chrome.json` / `manifest.firefox.json`) so one merge step produces the final manifest per browser.
-   - Keep `patches/chrome` and `patches/firefox` for any remaining CSS/asset differences; avoid browser-specific JS unless necessary.
+   - Avoid browser-specific JS unless necessary; CSS/asset URL rewriting is done in the build script.
 
 3. **Add Node build script** ✅ _Done_
-   - Implement a script that: (a) copies `src/` and static assets into a temp dir, (b) writes version and build ID into generated files, (c) merges in the correct manifest per target, (d) applies the relevant patches, (e) runs `web-ext build` (and optionally `web-ext lint` for Firefox) for each target.
+   - Implement a script that: (a) copies `src/` and static assets into a temp dir, (b) writes version and build ID into generated files, (c) merges in the correct manifest per target, (d) runs `web-ext build` (and optionally `web-ext lint` for Firefox) for each target.
    - Output remains `browser-extensions/chrome/build` and `browser-extensions/firefox/build` (or equivalent) so existing CI and `./script/server` behaviour stay the same.
 
 4. **Point scripts and CI at the new build** ✅ _Done_
@@ -38,7 +38,7 @@ A planned refactor to unify the browser-extension codebase and manage dependenci
 
 5. **Optional later steps**
    - ~~Move unit tests under the same workspace and have them import from `src/` so they run against the same code the extension uses.~~ ✅ _Done_ — `browser-extensions/extension/src/js/tests` is now a pnpm workspace package (`running-challenges-tests`); `script/test` and CI run tests via `pnpm --filter running-challenges-tests run test-with-coverage`; bootstrap no longer runs a separate `npm install` in the tests dir.
-   - ~~Replace vendored third-party JS/CSS with npm packages and add a small bundler (e.g. esbuild) for content/background scripts if desired.~~ Partially done: jQuery, Leaflet, leaflet.fullscreen, leaflet.markercluster, leaflet-extra-markers, and d3-voronoi are now npm dependencies; the build copies them from `node_modules` into the extension build. Leaflet-extramarkers CSS and images are now sourced from the `leaflet-extra-markers` npm package, with extension URL rewriting done in the build script (no patch files). Leaflet core CSS remains in `css/third-party/` at repo root and is still patched for extension URLs; leaflet-canvasicon and leaflet-piechart remain vendored (no npm equivalents). Unit tests use jQuery from the tests package (`require('jquery')`). A future step could add a bundler and/or move the remaining vendored assets.
+   - ~~Replace vendored third-party JS/CSS with npm packages and add a small bundler (e.g. esbuild) for content/background scripts if desired.~~ Partially done: jQuery, Leaflet, leaflet.fullscreen, leaflet.markercluster, leaflet-extra-markers, and d3-voronoi are now npm dependencies; the build copies them from `node_modules` into the extension build. Leaflet-extramarkers CSS and images are now sourced from the `leaflet-extra-markers` npm package, with extension URL rewriting done in the build script. Leaflet core CSS and images are copied from npm in the build; leaflet-canvasicon and leaflet-piechart remain vendored (no npm equivalents). Unit tests use jQuery from the tests package (`require('jquery')`). A future step could add a bundler and/or move the remaining vendored assets.
 
 **Guarding Leaflet (and other third-party) migrations:** The Playwright UI tests in `browser-extensions/extension/src/js/tests/ui-test/` run in CI after the extension is built (see the "UI Testing" job in `.github/workflows/build-extension.yml`). In particular, the **"Leaflet markers load with icons (no network)"** test loads a mocked parkrunner page and asserts that the explorer map renders Leaflet marker icons. When you move Leaflet (or related assets) to pnpm management, run the full Playwright suite locally from the `ui-test` directory (after building the extension and unpacking the Chrome zip into `extension-binaries/chrome-extension-package/`). Any breakage in paths, CSS, or Leaflet API usage will cause that test (or the Basic extension load test) to fail in CI and locally.
 

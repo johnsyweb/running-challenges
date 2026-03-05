@@ -50,7 +50,6 @@ function run(cmd, opts = {}) {
 
 function buildBrowser(browser) {
   const buildDir = path.join(root, "browser-extensions", browser, "build");
-  const patchesDir = path.join(root, "patches", browser);
 
   console.log(`Building ${browser} extension...`);
 
@@ -184,17 +183,6 @@ function buildBrowser(browser) {
     .replace(/REPLACE_EXTENSION_BUILD_VERSION/g, EXTENSION_BUILD_VERSION)
     .replace(/REPLACE_EXTENSION_BUILD_ID/g, EXTENSION_BUILD_ID);
   fs.writeFileSync(path.join(buildDir, "manifest.json"), manifestStr + "\n");
-
-  if (fs.existsSync(patchesDir)) {
-    const patchFiles = fs
-      .readdirSync(patchesDir)
-      .filter((f) => f.endsWith(".patch"));
-    for (const f of patchFiles) {
-      run(
-        `patch -p0 --directory "${buildDir}" < "${path.join(patchesDir, f)}"`,
-      );
-    }
-  }
 
   run(`web-ext build`, { cwd: buildDir });
   if (browser === "firefox") {
