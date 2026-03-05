@@ -189,7 +189,7 @@ function buildBrowser(browser) {
 
   const artifactsDir = path.join(buildDir, "web-ext-artifacts");
   run(
-    `pnpm exec web-ext build --source-dir "${buildDir}" --artifacts-dir "${artifactsDir}"`,
+    `pnpm exec web-ext build --source-dir "${buildDir}" --artifacts-dir "${artifactsDir}" --ignore-files js/lib/third-party/**`,
   );
   if (browser === "firefox") {
     try {
