@@ -131,7 +131,7 @@ This repository includes a `script/` directory that follows GitHub's [scripts-to
 These scripts are the preferred way to bootstrap the project, run tests, and quickly see changes in the browser extensions.
 
 - `./script/bootstrap`  
-  Installs core tooling (`web-ext`) and JavaScript test dependencies, and validates that `gnu-sed` (`gsed`) is available on macOS (see `build/README.md` for details).
+  Installs core tooling (via `mise` and `pnpm`) and JavaScript test dependencies; see `build/README.md` for build-time details.
 
 - `./script/setup`  
   Runs `script/bootstrap`, then builds both the Chrome and Firefox extensions via the Node build script.
@@ -299,7 +299,7 @@ git push origin v0.7.5`
 Additional documentation lives in README files in subfolders:
 
 - [pnpm-migration.md](pnpm-migration.md) — plan for unifying the extension codebase and managing dependencies with pnpm.
-- `build/README.md` — build-time dependencies (including `gnu-sed` on macOS).
+- `build/README.md` — build-time dependencies.
 - `browser-extensions/extension/src/README.md` — example parkrunner pages to help with manual testing.
 - `browser-extensions/extension/src/js/README.md` — unit and automated browser testing for the extension.
 - `browser-extensions/extension/src/js/tests/ui-test/README.md` — Playwright-based UI testing notes.

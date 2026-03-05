@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-source build/tools.sh
 set -e
 
 BUILD_WEBSITE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -15,8 +14,12 @@ rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
 # Staging-specific config
 echo "staging.running-challenges.co.uk" > CNAME
-sed -i -e 's/https:\/\/www.running-challenges.co.uk/https:\/\/staging.running-challenges.co.uk/' _config.yml
-sed -i -e 's/Running Challenges/Running Challenges - Staging/' _config.yml
+tmp_cfg="$(mktemp _config.yml.XXXXXX)"
+sed 's|https://www.running-challenges.co.uk|https://staging.running-challenges.co.uk|g' _config.yml > "$tmp_cfg"
+mv "$tmp_cfg" _config.yml
+tmp_cfg="$(mktemp _config.yml.XXXXXX)"
+sed 's|Running Challenges|Running Challenges - Staging|g' _config.yml > "$tmp_cfg"
+mv "$tmp_cfg" _config.yml
 
 # Build the site
 bundle install

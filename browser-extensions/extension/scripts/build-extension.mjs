@@ -195,7 +195,7 @@ function buildBrowser(browser) {
     try {
       // Ignore third-party libraries in lint to avoid noise from their innerHTML usage.
       run(
-        `pnpm exec web-ext lint --source-dir "${buildDir}" --ignore-files js/lib/third-party/**`,
+        `pnpm exec web-ext lint --self-hosted --source-dir "${buildDir}" --ignore-files js/lib/third-party/**`,
       );
     } catch (_) {
       // lint can fail (e.g. Bus error on some platforms); build already ran

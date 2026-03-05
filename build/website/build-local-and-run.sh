@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-source build/tools.sh
 set -e
 
 JEKYLL_PORT=${JEKYLL_PORT:-4000}
