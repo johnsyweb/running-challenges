@@ -6,7 +6,7 @@ but is summarised here for ease of use):
 
 - jquery v3.6.0 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/jquery/dist` (no vendored copy).
 - leaflet v1.3.1 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/leaflet/dist` (JS, CSS, images; no vendored copy).
-- d3-voronoi v1.1.2 - https://github.com/d3/d3-voronoi/releases/download/v1.1.2/d3-voronoi.zip
+- d3-voronoi v1.1.4 — from pnpm (`browser-extensions/extension`); extension and website build copy from `node_modules/d3-voronoi/dist` (no vendored copy).
 
 The LeafletJS library is extensible, and the following additional libraries have been used:
 

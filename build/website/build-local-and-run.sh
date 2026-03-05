@@ -39,7 +39,9 @@ cp "$JQ_NM/jquery.min.js" website/assets/js/lib/third-party/jquery/jquery-3.6.0.
 L_NM="browser-extensions/extension/node_modules/leaflet/dist"
 mkdir -p website/assets/js/lib/third-party/leaflet
 cp "$L_NM/leaflet.js" website/assets/js/lib/third-party/leaflet/leaflet-1.3.1.js
-cp -r js/lib/third-party/d3-voronoi website/assets/js/lib/third-party/
+D3_NM="browser-extensions/extension/node_modules/d3-voronoi/dist"
+mkdir -p website/assets/js/lib/third-party/d3-voronoi
+cp "$D3_NM/d3-voronoi.js" website/assets/js/lib/third-party/d3-voronoi/d3-voronoi.js
 cp -r js/lib/third-party/leaflet-canvasicon website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-extramarkers website/assets/js/lib/third-party/
 cp -r js/lib/third-party/leaflet-fullscreen website/assets/js/lib/third-party/
