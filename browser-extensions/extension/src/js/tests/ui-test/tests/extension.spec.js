@@ -225,8 +225,9 @@ test("Leaflet markers load with icons (no network)", async ({ page }) => {
 });
 
 test("Explorer map shows country completion pie charts", async ({ page }) => {
-  await installNetworkFreeMocks(page, countryDomain, "2705084");
-  await page.goto(`https://www.${countryDomain}/parkrunner/2705084/all/`, {
+  // Danny NORMAN (A482) has significant UK tourism (e.g. 474/868 UK events).
+  await installNetworkFreeMocks(page, countryDomain, "482");
+  await page.goto(`https://www.${countryDomain}/parkrunner/482/all/`, {
     waitUntil: "domcontentloaded",
   });
 
