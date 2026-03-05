@@ -165,6 +165,15 @@
     "page": "html/options.html"
   },
   "background": {
-    "service_worker": "js/background.js"
+    "service_worker": "js/background.js",
+    "scripts": ["js/background.js"]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{70afe5fd-82a7-4300-9b3e-06ac0bd1c92d}",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
   }
 }

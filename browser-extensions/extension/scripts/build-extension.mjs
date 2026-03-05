@@ -190,7 +190,10 @@ function buildBrowser(browser) {
   run(`web-ext build`, { cwd: buildDir });
   if (browser === "firefox") {
     try {
-      run(`web-ext lint`, { cwd: buildDir });
+      // Ignore third-party libraries in lint to avoid noise from their innerHTML usage.
+      run(`web-ext lint --ignore-files js/lib/third-party/**`, {
+        cwd: buildDir,
+      });
     } catch (_) {
       // lint can fail (e.g. Bus error on some platforms); build already ran
     }
