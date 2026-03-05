@@ -1,9 +1,4 @@
 // @ts-check
-// const { test, expect } = require('@playwright/test');
-
-// Some more help taken from https://www.petroskyriakou.com/how-to-load-a-chrome-extension-in-playwright
-// https://playwright.dev/docs/chrome-extensions hasn't been particularly helpful
-
 const { test: base, expect, chromium } = require("@playwright/test");
 const path = require("path");
 const fs = require("fs");
@@ -15,7 +10,7 @@ const countryDomain = process.env.COUNTRY_HOSTNAME
 const extensionPath = path.join(
   __dirname,
   "../extension-binaries/chrome-extension-package/",
-); // make sure this is correct
+);
 
 function getFixturePath(hostname, athleteId, suffix) {
   return path.join(
@@ -29,39 +24,6 @@ function getFixturePath(hostname, athleteId, suffix) {
     athleteId,
     suffix,
     "index.html",
-  );
-}
-
-async function mockParkrunRunnerPage(page, hostname, athleteId, suffix) {
-  const url = `https://www.${hostname}/parkrunner/${athleteId}/${suffix}/`;
-  const fixturePath = getFixturePath(hostname, athleteId, suffix);
-  if (!fs.existsSync(fixturePath)) {
-    throw new Error(
-      `Fixture not found: ${url} (expected ${fixturePath}). Run ui-test/update.sh to refresh fixtures.`,
-    );
-  }
-  const body = fs.readFileSync(fixturePath, "utf8");
-  await page.route(url, (route) =>
-    route.fulfill({ status: 200, contentType: "text/html", body }),
-  );
-}
-
-async function mockEventsJson(page) {
-  const fixturePath = path.join(
-    __dirname,
-    "..",
-    "supporting-data",
-    "sites",
-    "images.parkrun.com",
-    "contents",
-    "events.json",
-  );
-  if (!fs.existsSync(fixturePath)) {
-    throw new Error(`Fixture not found: ${fixturePath}`);
-  }
-  const body = fs.readFileSync(fixturePath, "utf8");
-  await page.route("https://images.parkrun.com/events.json", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body }),
   );
 }
 
@@ -85,9 +47,9 @@ function getVolunteerFixturePath(hostname, athleteId) {
 }
 
 /**
- * Install route mocks so the Leaflet test needs no network: main doc, volunteer
- * fetch, events.json, and OSM tiles are fulfilled from fixtures; all other
- * requests are aborted. Call before page.goto().
+ * Install route mocks so tests need no network: main doc, volunteer fetch,
+ * events.json, and OSM tiles are fulfilled from fixtures; all other requests
+ * are aborted. Call before page.goto().
  */
 async function installNetworkFreeMocks(page, hostname, athleteId) {
   const mainUrl = `https://www.${hostname}/parkrunner/${athleteId}/all/`;
@@ -172,7 +134,6 @@ const test = base.extend({
         width: 1920,
         height: 1080,
       },
-      // Is this how you accept self-signed certificates?
       ignoreHTTPSErrors: true,
     };
 
@@ -231,7 +192,7 @@ test("Leaflet markers load with icons (no network)", async ({ page }) => {
   expect(await markers.count()).toBeGreaterThan(0);
 });
 
-let badgesThatShouldExistMap = {
+const badgesThatShouldExistMap = {
   // Running badges
   "runner-tourist": ["1309364", "482"],
   "runner-name-badge": ["482"],
@@ -265,7 +226,7 @@ let badgesThatShouldExistMap = {
   "volunteer-parkwalker": ["88720"],
 };
 
-let notApplicableBadgesPerDomain = {
+const notApplicableBadgesPerDomain = {
   "parkrun.co.at": ["volunteer-warm-up-leader"],
   "parkrun.pl": ["volunteer-warm-up-leader"],
 };
@@ -298,13 +259,3 @@ Object.keys(badgesThatShouldExistMap).forEach((badgeShortname) => {
     }
   });
 });
-
-// test('get started link', async ({ page }) => {
-//   await page.goto('https://playwright.dev/');
-
-//   // Click the get started link.
-//   await page.getByRole('link', { name: 'Get started' }).click();
-
-//   // Expects the URL to contain intro.
-//   await expect(page).toHaveURL(/.*intro/);
-// });
