@@ -187,19 +187,21 @@ function buildBrowser(browser) {
     .replace(/REPLACE_EXTENSION_BUILD_ID/g, EXTENSION_BUILD_ID);
   fs.writeFileSync(path.join(buildDir, "manifest.json"), manifestStr + "\n");
 
-  run(`web-ext build`, { cwd: buildDir });
+  const artifactsDir = path.join(buildDir, "web-ext-artifacts");
+  run(
+    `pnpm exec web-ext build --source-dir "${buildDir}" --artifacts-dir "${artifactsDir}"`,
+  );
   if (browser === "firefox") {
     try {
       // Ignore third-party libraries in lint to avoid noise from their innerHTML usage.
-      run(`web-ext lint --ignore-files js/lib/third-party/**`, {
-        cwd: buildDir,
-      });
+      run(
+        `pnpm exec web-ext lint --source-dir "${buildDir}" --ignore-files js/lib/third-party/**`,
+      );
     } catch (_) {
       // lint can fail (e.g. Bus error on some platforms); build already ran
     }
   }
 
-  const artifactsDir = path.join(buildDir, "web-ext-artifacts");
   const zips = fs
     .readdirSync(artifactsDir)
     .filter((f) => f.startsWith("running_challenges-") && f.endsWith(".zip"));
