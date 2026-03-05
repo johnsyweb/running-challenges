@@ -16,8 +16,13 @@ function get_table(id, caption) {
     if (table_captions.length !== 1) {
       return false;
     }
-    // Only include this table if the caption is correct
-    return table_captions[0].innerText.replace("–", "").trim() == caption;
+    // Only include this table if the caption is correct (normalise whitespace for comparison)
+    const normalisedPageCaption = table_captions[0].innerText
+      .replace("–", "")
+      .trim()
+      .replace(/\s+/g, " ");
+    const normalisedExpectedCaption = (caption || "").trim().replace(/\s+/g, " ");
+    return normalisedPageCaption === normalisedExpectedCaption;
   });
 }
 

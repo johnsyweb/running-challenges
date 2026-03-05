@@ -273,3 +273,8 @@ function update_cache_data(data_events) {
 
   return data
 }
+
+if (typeof window !== "undefined") {
+  window.load_data = load_data;
+  window.fetch_with_cache = fetch_with_cache;
+}

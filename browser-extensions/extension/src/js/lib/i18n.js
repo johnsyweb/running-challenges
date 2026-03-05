@@ -658,3 +658,9 @@ function get_normalised_volunteer_role(role) {
     }
     return mapped_role
 }
+
+if (typeof window !== "undefined") {
+  window.get_localised_value = get_localised_value;
+  window.get_localised_default_value = get_localised_default_value;
+  window.get_normalised_volunteer_role = get_normalised_volunteer_role;
+}

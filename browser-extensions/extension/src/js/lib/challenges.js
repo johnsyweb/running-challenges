@@ -2810,3 +2810,12 @@ function calculateCountryCompletionInfo(data) {
 
   return countryCompletionInfo
 }
+
+if (typeof window !== "undefined") {
+  window.generate_running_challenge_data = generate_running_challenge_data;
+  window.generate_volunteer_challenge_data = generate_volunteer_challenge_data;
+  window.generate_stats = generate_stats;
+  window.calculateCountryCompletionInfo = calculateCountryCompletionInfo;
+  window.has_geo_data = has_geo_data;
+  window.get_flag_image_src = get_flag_image_src;
+}

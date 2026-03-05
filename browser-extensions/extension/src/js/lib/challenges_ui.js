@@ -1584,3 +1584,12 @@ function toggleVisibilityOfChallenge(challengeShortname) {
   // Toggle the visibility of the challenge now
   challengeBodyElement.toggle();
 }
+
+if (typeof window !== "undefined") {
+  window.generate_challenge_table = generate_challenge_table;
+  window.generateExplorerTableEntry = generateExplorerTableEntry;
+  window.add_challenges_to_table = add_challenges_to_table;
+  window.add_table_break_row = add_table_break_row;
+  window.generate_standard_table_entry = generate_standard_table_entry;
+  window.add_stats_table = add_stats_table;
+}
