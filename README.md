@@ -145,6 +145,9 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
   - If no argument is given, the `PARKRUN_URL` environment variable is used if set.
   - If neither is provided, it defaults to `https://www.parkrun.com.au/parkrunner/1001388/all`.
 
+- `./script/server-website [PORT]`  
+  Builds the website assets and runs the local Jekyll site via Docker (`build/website/build-local-and-run.sh`). If `PORT` is provided, it overrides the `JEKYLL_PORT` environment variable for that run (default 4000).
+
 - `./script/test`
   Runs the JavaScript unit tests with coverage via the `running-challenges-tests` pnpm workspace package (`browser-extensions/extension/src/js/tests`), then runs the Playwright UI tests in `browser-extensions/extension/src/js/tests/ui-test` (Chrome extension loaded via `@playwright/test`).
 

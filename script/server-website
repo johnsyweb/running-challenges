@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+echo "Running script/server-website"
+
+# Optional first argument overrides JEKYLL_PORT for this run.
+if [[ "${1-}" != "" ]]; then
+  export JEKYLL_PORT="$1"
+fi
+
+PORT_DISPLAY="${JEKYLL_PORT:-4000}"
+echo "Starting local website on http://localhost:${PORT_DISPLAY}/"
+
+./build/website/build-local-and-run.sh
+
