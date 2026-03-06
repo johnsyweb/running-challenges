@@ -21,7 +21,9 @@ function get_table(id, caption) {
       .replace("–", "")
       .trim()
       .replace(/\s+/g, " ");
-    const normalisedExpectedCaption = (caption || "").trim().replace(/\s+/g, " ");
+    const normalisedExpectedCaption = (caption || "")
+      .trim()
+      .replace(/\s+/g, " ");
     return normalisedPageCaption === normalisedExpectedCaption;
   });
 }
@@ -63,22 +65,27 @@ function parse_volunteer_table(result) {
 }
 
 function set_complete_progress_message(errors) {
-  var messages = [
-    'Additional badges provided by <a href="https://running-challenges.co.uk" target="_blank">Running Challenges</a>',
-  ];
+  const safe_link =
+    'Additional badges provided by <a href="https://running-challenges.co.uk" target="_blank">Running Challenges</a>';
+  const messages = [safe_link];
   $.each(errors, function (index, error_message) {
-    messages.push(error_message);
+    messages.push(escape_html(error_message));
   });
   if (errors.length > 0) {
     messages.push("Refresh the page to try again");
   }
-  set_progress_message(messages.join("<br/><br/>"));
+  set_progress_message_html(messages.join("<br/><br/>"));
 }
 
 function set_progress_message(progress_message) {
   console.log("Progress: " + progress_message);
-  // $("div[id=running_challenges_messages_div]").html($("div[id=running_challenges_messages_div]").html() + "<br/>" + progress_message)
-  $("div[id=running_challenges_messages_div]").html(progress_message);
+  $("div[id=running_challenges_messages_div]").html(
+    escape_html(progress_message),
+  );
+}
+
+function set_progress_message_html(safe_html) {
+  $("div[id=running_challenges_messages_div]").html(safe_html);
 }
 
 function parsePageAthleteInfo() {
@@ -261,8 +268,8 @@ function create_skeleton_elements(id_map) {
     id_map["messages"],
   );
   running_challenges_message_spacer.after(running_challenges_messages_div);
-  // Use the progress message function to se interval
-  set_progress_message(
+  // Use the progress message function to set initial message
+  set_progress_message_html(
     'Loading <a href="https://running-challenges.co.uk" target="_blank">Running Challenges</a> Badges',
   );
 
