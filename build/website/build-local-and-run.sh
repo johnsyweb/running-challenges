@@ -16,7 +16,7 @@ rm -rf ${SITE_DIR} && mkdir ${SITE_DIR}
 
 # Install Ruby gems (once) and run the local Jekyll server
 bundle install
-bundle exec jekyll serve --future --trace --port "${JEKYLL_PORT}"
+bundle exec jekyll serve --future --trace --port "${JEKYLL_PORT}" --host 0.0.0.0
 
 # Print summary
 echo "Built site, total size: `du -sh ${SITE_DIR}`"
