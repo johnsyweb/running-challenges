@@ -128,6 +128,42 @@ async function installNetworkFreeMocks(page, hostname, athleteId) {
         body: ONE_PX_TRANSPARENT_PNG,
       });
     }
+    if (
+      url.includes("images/badges/") ||
+      url.includes("images/flags/") ||
+      url.includes("running-challenges.co.uk/img/badges/") ||
+      url.includes("running-challenges.co.uk/img/flags/")
+    ) {
+      return route.fulfill({
+        status: 200,
+        contentType: "image/png",
+        body: ONE_PX_TRANSPARENT_PNG,
+      });
+    }
+    const extramarkersImgMatch = url.match(
+      /unpkg\.com\/leaflet-extra-markers@[\d.]+\/dist\/img\/([^/?#]+\.png)/,
+    );
+    if (extramarkersImgMatch) {
+      const extramarkersImgPath = path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "node_modules",
+        "leaflet-extra-markers",
+        "dist",
+        "img",
+        extramarkersImgMatch[1],
+      );
+      if (fs.existsSync(extramarkersImgPath)) {
+        return route.fulfill({
+          status: 200,
+          contentType: "image/png",
+          body: fs.readFileSync(extramarkersImgPath),
+        });
+      }
+    }
     return route.abort();
   });
 }
@@ -215,8 +251,157 @@ test(
   );
   const explorerMap = page.locator("#explorer_map");
   await expect(explorerMap).toHaveCount(1);
+
+  // Badges: athlete 1309364 has runner-tourist; badge images must load (correct URLs so they can be fulfilled by our route).
+  const badgesDiv = page.locator("#running_challenges_badges_div");
+  await expect(badgesDiv).toHaveCount(1);
+  await expect(page.locator("#badge-awarded-runner-tourist")).toBeVisible({
+    timeout: 5000,
+  });
+  const badgeImages = badgesDiv.locator("img");
+  await expect(badgeImages.first()).toBeVisible({ timeout: 1000 });
+  const atLeastOneBadgeLoaded = await page.evaluate(() => {
+    const imgs = document.querySelectorAll("#running_challenges_badges_div img");
+    return Array.from(imgs).some((img) => img.naturalWidth > 0);
+  });
+  expect(atLeastOneBadgeLoaded).toBe(true);
+
+  // Flags: at least one country flag (e.g. UK) must be present and its image must load.
+  const flagsDiv = page.locator("#running_challenges_flags_div");
+  await expect(flagsDiv).toHaveCount(1);
+  const flagImages = flagsDiv.locator("img");
+  await expect(flagImages.first()).toBeVisible({ timeout: 5000 });
+  const atLeastOneFlagLoaded = await page.evaluate(() => {
+    const imgs = document.querySelectorAll("#running_challenges_flags_div img");
+    return Array.from(imgs).some((img) => img.naturalWidth > 0);
+  });
+  expect(atLeastOneFlagLoaded).toBe(true);
+
+  // Map: tiles must be contained (not scattered). Map fills container width (100%) and has fixed height.
+  const mapContainer = page.locator("#explorer_map");
+  await expect(mapContainer).toHaveCSS("height", "400px");
+  await expect(mapContainer).toHaveCSS("width", /^\d+(\.\d+)?px$/);
+  const tilesInsideMap = mapContainer.locator(".leaflet-tile-pane img, .leaflet-tile");
+  await expect(tilesInsideMap.first()).toBeVisible({ timeout: 5000 });
+  const allTiles = page.locator(".leaflet-tile-pane img, .leaflet-tile");
+  const tilesWithinMap = mapContainer.locator(".leaflet-tile-pane img, .leaflet-tile");
+  const totalTiles = await allTiles.count();
+  const tilesInMap = await tilesWithinMap.count();
+  expect(tilesInMap).toBe(totalTiles);
+
+  // All Leaflet tiles and markers must be inside the explorer map in the DOM and the map must clip (overflow:hidden) so nothing is visibly scattered.
+  const mapStructureCheck = await page.evaluate(() => {
+    const mapEl = document.getElementById("explorer_map");
+    if (!mapEl) return { ok: false, reason: "no map" };
+    const overflow = window.getComputedStyle(mapEl).overflow;
+    const allTilesInPage = document.querySelectorAll(".leaflet-tile-pane img, .leaflet-tile");
+    const allTilesInMap = mapEl.querySelectorAll(".leaflet-tile-pane img, .leaflet-tile");
+    const allMarkersInPage = document.querySelectorAll(
+      ".leaflet-marker-icon, .leaflet-piechart-icon"
+    );
+    const allMarkersInMap = mapEl.querySelectorAll(
+      ".leaflet-marker-icon, .leaflet-piechart-icon"
+    );
+    const tilesContained = allTilesInPage.length === allTilesInMap.length;
+    const markersContained = allMarkersInPage.length === allMarkersInMap.length;
+    const clips = overflow === "hidden" || overflow === "auto";
+    return {
+      ok: tilesContained && markersContained && clips,
+      tilesContained,
+      markersContained,
+      clips,
+      overflow,
+      tileCount: allTilesInPage.length,
+      markerCount: allMarkersInPage.length,
+    };
+  });
+  expect(
+    mapStructureCheck.ok,
+    mapStructureCheck.reason ||
+      `Map structure: tilesContained=${mapStructureCheck.tilesContained} markersContained=${mapStructureCheck.markersContained} clips=${mapStructureCheck.clips} overflow=${mapStructureCheck.overflow}`,
+  ).toBe(true);
   } catch (err) {
     await saveConsoleAndRethrow(err);
   }
 });
 
+test(
+  "Userscript challenge map (Pirates) shows eight event markers for athlete 482",
+  async ({ page }, testInfo) => {
+    const userscriptPath = path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "website",
+      "assets",
+      "js",
+      "running-challenges.user.js",
+    );
+    if (!fs.existsSync(userscriptPath)) {
+      throw new Error(
+        `Userscript bundle not found at ${userscriptPath}. Run ./script/update from the repo root to build it.`,
+      );
+    }
+
+    const consoleEvents = [];
+    page.on("console", (msg) => {
+      consoleEvents.push({ type: msg.type(), text: msg.text() });
+    });
+    page.on("pageerror", (err) => {
+      consoleEvents.push({ type: "pageerror", text: err.message });
+    });
+    const saveConsoleAndRethrow = async (err) => {
+      await testInfo.attach("userscript-console-and-errors.json", {
+        body: JSON.stringify(consoleEvents, null, 2),
+        contentType: "application/json",
+      });
+      fs.mkdirSync(PLAYWRIGHT_DEBUG_DIR, { recursive: true });
+      fs.writeFileSync(
+        path.join(PLAYWRIGHT_DEBUG_DIR, "userscript-console-and-errors.json"),
+        JSON.stringify(consoleEvents, null, 2),
+        "utf8",
+      );
+      throw err;
+    };
+
+    try {
+      await installNetworkFreeMocks(page, countryDomain, "482");
+      const eventsJsonPromise = page.waitForResponse(
+        (resp) =>
+          resp.url().includes("events.json") && resp.status() === 200,
+        { timeout: 15000 },
+      );
+      await page.goto(
+        `https://www.${countryDomain}/parkrunner/482/all/`,
+        { waitUntil: "domcontentloaded" },
+      );
+      const userscriptSource = fs.readFileSync(userscriptPath, "utf8");
+      await page.addScriptTag({ content: userscriptSource });
+      await eventsJsonPromise;
+
+      await expect(
+        page.locator("#running_challenges_messages_div"),
+      ).toHaveText("Additional badges provided by Running Challenges", {
+        timeout: 20000,
+      });
+
+      await page.locator("#challenge_pirates_show_map").click();
+      const piratesMap = page.locator("#challenge_map_pirates");
+      await expect(piratesMap).toBeVisible({ timeout: 10000 });
+      const markerCount = await piratesMap
+        .locator(".leaflet-marker-icon")
+        .count();
+      expect(
+        markerCount,
+        `Pirates challenge map should have at least 8 event markers (8 qualifying events; extension shows 8), got ${markerCount}`,
+      ).toBeGreaterThanOrEqual(8);
+    } catch (err) {
+      await saveConsoleAndRethrow(err);
+    }
+  },
+);

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import esbuild from "esbuild";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -11,6 +12,38 @@ const extensionDir = path.resolve(__dirname, "..");
 const rootDir = path.resolve(extensionDir, "..", "..");
 const websiteJsDir = path.join(rootDir, "website", "assets", "js");
 const outfile = path.join(websiteJsDir, "running-challenges.user.js");
+
+const leafletCssPath = path.join(
+  extensionDir,
+  "node_modules",
+  "leaflet",
+  "dist",
+  "leaflet.css",
+);
+const extramarkersCssPath = path.join(
+  extensionDir,
+  "node_modules",
+  "leaflet-extra-markers",
+  "dist",
+  "css",
+  "leaflet.extra-markers.min.css",
+);
+const EXTRAMARKERS_IMG_BASE =
+  "https://unpkg.com/leaflet-extra-markers@1.0.6/dist/img/";
+
+let leafletCssEmbed = '""';
+if (fs.existsSync(leafletCssPath)) {
+  let combinedCss =
+    ".leaflet-container { position: relative; }\n" +
+    fs.readFileSync(leafletCssPath, "utf8");
+  if (fs.existsSync(extramarkersCssPath)) {
+    const extramarkersCss = fs.readFileSync(extramarkersCssPath, "utf8");
+    combinedCss +=
+      "\n" +
+      extramarkersCss.replace(/url\s*\(\s*["']?\.\.\/img\//g, `url("${EXTRAMARKERS_IMG_BASE}`);
+  }
+  leafletCssEmbed = JSON.stringify(combinedCss);
+}
 
 const userscriptHeader = `// ==UserScript==
 // @name         Running Challenges
@@ -46,6 +79,11 @@ const userscriptHeader = `// ==UserScript==
 
 const shim = `
 (function () {
+  if (typeof document !== "undefined" && document.head) {
+    var _s = document.createElement("style");
+    _s.textContent = ${leafletCssEmbed};
+    document.head.appendChild(_s);
+  }
   // Provide a minimal chrome-style API so the extension code can run unchanged.
   if (typeof window.chrome === "undefined") {
     window.chrome = {};
@@ -55,8 +93,19 @@ const shim = `
   if (!chrome.runtime) {
     chrome.runtime = {
       getURL: function (path) {
-        // In userscript mode everything is bundled; paths are only used for display or links.
-        return path.replace(/^\\//, "");
+        var p = path.charAt(0) === "/" ? path.slice(1) : path;
+        if (!p) return "https://running-challenges.co.uk/";
+        var base = "https://running-challenges.co.uk/";
+        if (p.indexOf("images/") === 0) {
+          return base + "img/" + p.slice(7);
+        }
+        if (p.indexOf("html/") === 0) {
+          if (p === "html/help.html" || p === "html/options.html") {
+            return base + "getstarted/";
+          }
+          return base + p;
+        }
+        return base + p;
       },
     };
   }
