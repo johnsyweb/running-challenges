@@ -15,6 +15,7 @@ import "../src/js/lib/cache.js";
 import "../src/js/lib/i18n.js";
 import "../src/js/lib/challenges.js";
 import "../src/js/lib/challenges_ui.js";
+import "../src/js/lib/escape-html.js";
 import "../src/js/content-scripts/content-script-parkrunner.js";
 
 // Ensure the main page initialiser runs once the DOM is ready.
