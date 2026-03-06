@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-# Ruby 3.1 reached EOL; we use 3.3+ (see mise.toml).
-ruby ">= 3.3.0"
+# Ruby 3.1 reached EOL; we use 3.4+ (see mise.toml).
+ruby ">= 3.4.0"
 
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
@@ -13,6 +13,10 @@ ruby ">= 3.3.0"
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
+# Ruby 3.4+ ships these as bundled gems; Jekyll and dependencies require them.
+gem "base64"
+gem "bigdecimal"
+gem "csv"
 gem "jekyll", "~> 4.0.0"
 gem "webrick", "~> 1.8"
 
