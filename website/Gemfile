@@ -2,8 +2,8 @@
 
 source "https://rubygems.org"
 
-# Ruby 3.1 reached EOL; we use 3.2+ (see mise.toml and .ruby-version).
-ruby ">= 3.2.0"
+# Ruby 3.1 reached EOL; we use 3.3+ (see mise.toml).
+ruby ">= 3.3.0"
 
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
