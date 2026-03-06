@@ -45,10 +45,16 @@ if (fs.existsSync(leafletCssPath)) {
   leafletCssEmbed = JSON.stringify(combinedCss);
 }
 
+// Tampermonkey etc. expect @version in the form x.y.z (three parts)
+const USCRIPT_VERSION = (process.env.EXTENSION_BUILD_VERSION || "2.0.1").replace(
+  /^v/,
+  "",
+);
+
 const userscriptHeader = `// ==UserScript==
 // @name         Running Challenges
 // @namespace    https://running-challenges.co.uk/
-// @version      0.1.0
+// @version      ${USCRIPT_VERSION}
 // @description  Adds Running Challenges badges to your parkrun results page without installing a browser extension.
 // @author       Running Challenges
 // @match        https://www.parkrun.ca/parkrunner/*/all/

@@ -18,7 +18,7 @@ const root = fs.existsSync(path.join(candidateRoot, "build/version.sh"))
   ? candidateRoot
   : process.cwd();
 
-const EXTENSION_BUILD_VERSION = process.env.EXTENSION_BUILD_VERSION || "2.0.0";
+const EXTENSION_BUILD_VERSION = process.env.EXTENSION_BUILD_VERSION || "2.0.1";
 const EXTENSION_BUILD_ID = process.env.EXTENSION_BUILD_ID || "0";
 
 const srcDir = path.join(extensionDir, "src");

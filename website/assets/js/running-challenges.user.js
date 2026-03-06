@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Running Challenges
 // @namespace    https://running-challenges.co.uk/
-// @version      0.1.0
+// @version      2.0.1.0
 // @description  Adds Running Challenges badges to your parkrun results page without installing a browser extension.
 // @author       Running Challenges
 // @match        https://www.parkrun.ca/parkrunner/*/all/
