@@ -41,6 +41,9 @@ jobs:
           echo "sanitised branch name: ${SANITISED_BRANCH_NAME}"
           echo "sanitised-branch-name=${SANITISED_BRANCH_NAME}" >> $GITHUB_OUTPUT
 
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
+
       # Prepare the website directory
       - name: Copy dependencies to Website directory
         run: |
