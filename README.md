@@ -192,6 +192,10 @@ This repository uses GitHub Actions for continuous integration and deployment. T
 - **Action**: Runs CodeQL security analysis
 - **Workflow**: `.github/workflows/codeql-analysis.yml`
 
+## Website screenshots
+
+- **Local**: Run `./script/update-screenshots` to capture screenshots from the live parkrun site with the Chrome extension loaded. Requires extension built (`./script/update`). Screenshots are defined in `browser-extensions/extension/src/js/tests/ui-test/screenshots.yml`.
+
 # Dependency Management
 
 This repository uses [Dependabot](https://docs.github.com/en/code-security/dependabot) to automatically keep dependencies up-to-date:
