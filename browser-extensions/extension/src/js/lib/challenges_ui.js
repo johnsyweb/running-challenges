@@ -300,7 +300,7 @@ function generateExplorerTableEntry(table, data) {
       $(
         '<td colspan="4"><div id="' +
           explorerMapId +
-          '" style="height:400px; width:400"></div></td>',
+          '" style="position:relative; overflow:hidden; height:400px; width:100%"></div></td>',
       ),
     );
     challenge_tbody_detail.append(map_row);
@@ -310,6 +310,10 @@ function generateExplorerTableEntry(table, data) {
     table.append(challenge_tbody_header);
     table.append(challenge_tbody_detail);
 
+    var mapDiv = document.getElementById(explorerMapId);
+    if (mapDiv) {
+      void mapDiv.offsetHeight;
+    }
     drawExplorerMap(explorerMapId, data);
   }
 }
@@ -578,6 +582,19 @@ function drawExplorerMap(divId, data) {
   L.control.fullscreen().addTo(r_map);
 
   apply_fullscreen_icon_styles();
+
+  // Ensure Leaflet recalculates container size and repositions layers after layout (fixes tiles/markers outside bounds in table layouts).
+  r_map.whenReady(function () {
+    r_map.invalidateSize();
+    if (typeof requestAnimationFrame !== "undefined") {
+      requestAnimationFrame(function () {
+        r_map.invalidateSize();
+      });
+    }
+    setTimeout(function () {
+      r_map.invalidateSize();
+    }, 150);
+  });
 
   var map_data = {
     map: r_map,
@@ -1432,7 +1449,7 @@ function generate_standard_table_entry(challenge, table, data) {
       $(
         '<td colspan="4"><div id="challenge_map_' +
           challenge.shortname +
-          '" style="height:400; width:400"></div></td>',
+          '" style="position:relative; overflow:hidden; height:400px; width:100%"></div></td>',
       ),
     );
     challenge_tbody_detail.append(map_row);

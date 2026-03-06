@@ -19,5 +19,8 @@ export EXTENSION_BUILD_VERSION EXTENSION_BUILD_ID
 echo "Rebuilding extensions (Chrome and Firefox)..."
 pnpm --filter running-challenges-extension run build:extension
 
+echo "Building userscript bundle..."
+pnpm --filter running-challenges-extension run build:userscript
+
 echo "script/update completed successfully."
 
