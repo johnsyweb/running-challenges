@@ -158,10 +158,11 @@ These scripts are the preferred way to bootstrap the project, run tests, and qui
 
 To ensure consistent tool versions between local development and CI, this repository uses [`mise`](https://mise.jdx.dev/):
 
-- Tool versions are defined in `mise.toml` (for example, Node.js 20, pnpm 10, and Ruby 3.1).
+- Tool versions are defined in `mise.toml` (for example, Node.js 20, pnpm 10, and Ruby 3.2).
 - On a local machine:
   - Install [mise](https://mise.jdx.dev/) if you do not have it, then from the repository root run `./script/bootstrap`. Bootstrap runs `mise install` to install the toolchain (Node.js, pnpm, Ruby) from `mise.toml`, then `pnpm install` for extension build dependencies (such as `web-ext`).
 - In GitHub Actions, the [`jdx/mise-action`](https://github.com/jdx/mise-action) workflow step reads `mise.toml` and installs the same tool versions; extension jobs then run `pnpm install --frozen-lockfile`.
+- To verify the Jekyll website builds (e.g. after upgrading Ruby), run `cd website && bundle install && bundle exec jekyll build`.
 
 # Automated builds
 
