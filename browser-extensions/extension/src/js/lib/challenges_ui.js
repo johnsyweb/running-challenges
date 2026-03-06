@@ -98,8 +98,11 @@ function generate_challenge_table() {
   return table;
 }
 
-function add_table_break_row(table, title, help) {
+function add_table_break_row(table, title, help, id) {
   var tbody = $("<tbody/>");
+  if (id !== undefined) {
+    tbody.attr("id", id);
+  }
   var gap_row = $("<tr/>");
   gap_row.append($("<th/>").attr("colspan", 6).append("<span>&nbsp;</span>"));
   tbody.append(gap_row);
@@ -1442,14 +1445,14 @@ function generate_standard_table_entry(challenge, table, data) {
   var main_row = get_challenge_header_row(challenge, data);
   challenge_tbody_header.append(main_row);
 
-  // Create a row to hold a map, and hide it
+  // Create a row to hold a map; div has no height until the map is displayed
   if (challenge.has_map === true) {
     console.log("Creating map for " + challenge.shortname);
     var map_row = $("<tr/>").append(
       $(
         '<td colspan="4"><div id="challenge_map_' +
           challenge.shortname +
-          '" style="position:relative; overflow:hidden; height:400px; width:100%"></div></td>',
+          '" style="position:relative; overflow:hidden; height:0; width:100%"></div></td>',
       ),
     );
     challenge_tbody_detail.append(map_row);

@@ -634,6 +634,7 @@ function add_challenge_results(div_id, data) {
         results_table,
         "Volunteer Challenges",
         "Get a purple badge when you've done a role once, get a star for doing the role 5+ times, two stars for 10+ times, three stars for 25+ times.",
+        "running_challenges_volunteer_challenges_heading",
       );
       add_challenges_to_table(results_table, "volunteer_results", data);
     }

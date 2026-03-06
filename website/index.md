@@ -10,10 +10,9 @@ Welcome to Running Challenges! This [Chrome extension]({{ site.data.webstore.web
 your [parkrun](https://www.parkrun.com) results, including tourist challenges and tracking your volunteering at parkrun.
 Each completed challenge gives you a badge on your profile to show off to all your friends!
 
-To use this extension you must be using the **Chrome/Firefox Web Browser** on a **laptop/desktop computer**,
-or **Firefox for Android** - it is not available to install on Apple iPhones/iPads.
-The extension is published in the Chrome and Firefox webstores, see the [getting started](/getstarted/)
-page for more detailed instructions.
+To use this extension you must be using **Chrome or Firefox** on a **laptop/desktop**, or **Firefox for Android**.
+On **Apple iPhones and iPads** the extension is not available in the App Store; use a **Userscript Manager** (e.g. Userscripts, Stay) and install the [userscript](/assets/js/running-challenges.user.js) instead.
+See the [getting started](/getstarted/) page for detailed instructions.
 
 ![Athlete Profile With Badges]({{ site.baseurl }}/img/screenshots/screenshot-08-badges-including-flags-v2.png "Athlete Profile With Badges"){: .center-image .image-border}
 
