@@ -24,6 +24,9 @@ jobs:
       - name: Install pnpm dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Install Playwright Browsers
+        run: pnpm --filter running-challenges-chrome-ui-testing exec playwright install --with-deps chromium
+
       - name: Run script/cibuild
         run: ./script/cibuild
         shell: bash
