@@ -704,11 +704,15 @@ function generate_stat_most_runs_in_a_year(parkrun_results) {
   }
 }
 
-function generate_stat_p_index(parkrun_results) {
+function generate_stat_p_index(parkrun_results, options = {}) {
   const display_name = 'p-index'
-  var help = "The number of parkruns that satisfy the equation 'p parkruns run at least p times', e.g. if you have run 4 different parkruns at least 4 times each, your p-index is 4."
+  const definition_help = "The number of parkruns that satisfy the equation 'p parkruns run at least p times', e.g. if you have run 4 different parkruns at least 4 times each, your p-index is 4."
+  var help = definition_help
   var event_attendance_tally = {}
   var qualifying = []
+  const geo_data = options.geo_data
+  const home_parkrun_info = options.home_parkrun_info
+  const include_home_distances = geo_data !== undefined && home_parkrun_info !== undefined && has_lat_lon(home_parkrun_info)
 
   parkrun_results.forEach((parkrun_event) => {
     if (!(parkrun_event.name in event_attendance_tally)) {
@@ -717,16 +721,36 @@ function generate_stat_p_index(parkrun_results) {
     event_attendance_tally[parkrun_event.name] += 1
   })
 
-  const event_attendance_sorted = Object.keys(event_attendance_tally).sort((a, b) =>  event_attendance_tally[b] - event_attendance_tally[a])
+  const event_attendance_sorted = Object.keys(event_attendance_tally).sort((a, b) => {
+    const count_difference = event_attendance_tally[b] - event_attendance_tally[a]
+    if (count_difference !== 0) {
+      return count_difference
+    }
+    return a.localeCompare(b)
+  })
 
   event_attendance_sorted.forEach((event_name, index) => {
     if (event_attendance_tally[event_name] > index) {
-      qualifying.push(`${event_name} (${event_attendance_tally[event_name]})`)
+      const finish_count = event_attendance_tally[event_name]
+      const finish_label = finish_count === 1 ? 'finish' : 'finishes'
+      let event_summary = `${event_name} (${finish_count} ${finish_label})`
+
+      if (include_home_distances && event_name in geo_data.data.events) {
+        const event_info = geo_data.data.events[event_name]
+        if (has_lat_lon(event_info)) {
+          const distance = calculate_great_circle_distance(event_info, home_parkrun_info)
+          event_summary = `${event_name} (${distance.toFixed(1)}km away, ${finish_count} ${finish_label})`
+        }
+      }
+
+      qualifying.push(event_summary)
     }
   })
 
   var value = qualifying.length
-  help = `The number of parkrun events completed at least ${value} times. These are ${qualifying.join(", ")}.`
+  if (value >= 1) {
+    help = `The number of parkrun events completed at least ${value} times. These are:\n - ${qualifying.join("\n - ")}`
+  }
   return { display_name, help, value }
 }
 
@@ -1255,13 +1279,19 @@ function generate_stats(data) {
 
   // Stats that only need the list of parkruns
   if (data.info.has_parkrun_results) {
+    const p_index_options = {}
+    if (has_geo_data(data) && is_our_page(data) && data.info.has_home_parkrun) {
+      p_index_options.geo_data = data.geo_data
+      p_index_options.home_parkrun_info = data.user_data.home_parkrun_info
+    }
+
     stats['total_runs'] = generate_stat_total_runs(data.parkrun_results)
     stats['total_pbs'] = generate_stat_total_pbs(data.parkrun_results)
     stats['longest_pb_streak'] = generate_stat_longest_pb_streak(data.parkrun_results)
     stats['total_distance_ran'] = generate_stat_total_distance_ran(data.parkrun_results)
     stats['most_runs_in_a_year'] = generate_stat_most_runs_in_a_year(data.parkrun_results)
     stats['runs_this_year'] = generate_stat_runs_this_year(data.parkrun_results)
-    stats['p_index'] = generate_stat_p_index(data.parkrun_results)
+    stats['p_index'] = generate_stat_p_index(data.parkrun_results, p_index_options)
     stats['wilson_index'] = generate_stat_wilson_index(data.parkrun_results)
     stats['parkrun_birthday'] = generate_stat_parkrun_birthday(data.parkrun_results)
     stats['years_parkrunning'] = generate_stat_years_parkrunning(data.parkrun_results)

@@ -158,6 +158,75 @@ var geoData = getGeoData();
 
 describe("challenges.js", function () {
   describe("stats", function () {
+    describe("generate_stat_p_index", function () {
+      const generate_stat_p_index = challenges.__get__("generate_stat_p_index");
+      const calculate_great_circle_distance = challenges.__get__(
+        "calculate_great_circle_distance",
+      );
+      const definitionHelp =
+        "The number of parkruns that satisfy the equation 'p parkruns run at least p times', e.g. if you have run 4 different parkruns at least 4 times each, your p-index is 4.";
+
+      it("should return the fixed definition tooltip when p-index is zero", function () {
+        const r = generate_stat_p_index([]);
+        assert.strictEqual(r.value, 0);
+        assert.strictEqual(r.help, definitionHelp);
+      });
+
+      it("should return dynamic multiline help without distance data", function () {
+        const parkrunResults = [createParkrunResult({ name: "Winchester" })];
+        const r = generate_stat_p_index(parkrunResults);
+        assert.strictEqual(r.value, 1);
+        assert.strictEqual(
+          r.help,
+          "The number of parkrun events completed at least 1 times. These are:\n - Winchester (1 finish)",
+        );
+      });
+
+      it("should return dynamic multiline help with distances when available", function () {
+        const parkrunResults = [
+          createParkrunResult({ name: "Winchester" }),
+          createParkrunResult({ name: "Winchester" }),
+          createParkrunResult({ name: "Bushy Park" }),
+          createParkrunResult({ name: "Bushy Park" }),
+        ];
+        const homeParkrun = getParkrunEventInfo("Winchester");
+        const bushyDistance = calculate_great_circle_distance(
+          getParkrunEventInfo("Bushy Park"),
+          homeParkrun,
+        ).toFixed(1);
+        const r = generate_stat_p_index(parkrunResults, {
+          geo_data: geoData,
+          home_parkrun_info: homeParkrun,
+        });
+
+        assert.strictEqual(r.value, 2);
+        assert.strictEqual(
+          r.help,
+          `The number of parkrun events completed at least 2 times. These are:\n - Bushy Park (${bushyDistance}km away, 2 finishes)\n - Winchester (0.0km away, 2 finishes)`,
+        );
+      });
+
+      it("should omit distance when an event location is unavailable", function () {
+        const parkrunResults = [
+          createParkrunResult({ name: "Unknown Event" }),
+          createParkrunResult({ name: "Unknown Event" }),
+          createParkrunResult({ name: "Winchester" }),
+          createParkrunResult({ name: "Winchester" }),
+        ];
+        const homeParkrun = getParkrunEventInfo("Winchester");
+        const r = generate_stat_p_index(parkrunResults, {
+          geo_data: geoData,
+          home_parkrun_info: homeParkrun,
+        });
+
+        assert.strictEqual(r.value, 2);
+        assert.strictEqual(
+          r.help,
+          "The number of parkrun events completed at least 2 times. These are:\n - Unknown Event (2 finishes)\n - Winchester (0.0km away, 2 finishes)",
+        );
+      });
+    });
+
     describe("generate_stat_furthest_travelled", function () {
       // Use the special '__get__' accessor to get your private function.
       var generate_stat_furthest_travelled = challenges.__get__(
