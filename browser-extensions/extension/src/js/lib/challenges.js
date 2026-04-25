@@ -1333,8 +1333,7 @@ function get_initial_letter(event_name) {
 
 function get_flag_image_src(country) {
   // Mapping countries to flag image files
-  var flag_map = {
-      "New Zealand": "nz",
+  const flag_map = {
       "Australia": "au",
       "Austria": "at",
       "Canada": "ca",
