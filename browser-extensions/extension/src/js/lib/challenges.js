@@ -1728,10 +1728,8 @@ function challenge_name_badge(data, params) {
       }
     }
 	
-	console.log("number of subparts:" + o.subparts.length)
     // Add in all the missing ones
     for (i=0; i< o.subparts.length; i++) {
-		console.log(o.subparts_detail[i])
 		if (o.subparts_detail[i].info == "-") {
 
             // if (grouped_events !== undefined) {
@@ -1743,7 +1741,6 @@ function challenge_name_badge(data, params) {
                   details = get_parkrun_event_details(data, event.name)
                   if (has_lat_lon(details)) {
                     o.all_qualifying_events[event.name] = details
-					console.log(event.name)
                   }
                 }
               })
